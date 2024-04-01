@@ -84,9 +84,16 @@ timezone = "Local"
             heartbeatInterval = "10s"
             # 心跳机制，默认为resp响应式心跳。可选：resp 响应式心跳 | tick 定时主推心跳
             heartbeatMechanism = "resp"
-            # 下行心跳是否携带服务器时间，默认为true
-            heartbeatWithServerTime = true
-
+    [network.tcp]
+        [network.tcp.server]
+            # 服务器监听地址
+            addr = ":3553"
+            # 服务器最大连接数
+            maxConnNum = 5000
+            # 心跳检测间隔时间（秒），默认为10秒。设置为0则不启用心跳检测
+            heartbeatInterval = 0
+            # 心跳机制，默认resp
+            heartbeatMechanism = "resp"
 [packet]
     # 字节序，默认为big。可选：little | big
     byteOrder = "big"

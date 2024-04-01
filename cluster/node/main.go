@@ -1,12 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"github.com/dobyte/due/locate/redis/v2"
 	"github.com/dobyte/due/registry/consul/v2"
 	"github.com/dobyte/due/transport/rpcx/v2"
 	"github.com/dobyte/due/v2"
 	"github.com/dobyte/due/v2/cluster/node"
 	"github.com/dobyte/due/v2/log"
+	"sync/atomic"
 )
 
 const greet = 1
@@ -47,7 +49,21 @@ type greetRes struct {
 	Message string `json:"message"`
 }
 
+var (
+	totalRecv int64
+	totalSent int64
+)
+
 func greetHandler(ctx node.Context) {
+	total := atomic.AddInt64(&totalRecv, 1)
+
+	if total%1000 == 0 {
+		fmt.Println("total recv: ", total)
+	}
+
+	//ctx = ctx.Clone()
+
+	//xcall.Go(func() {
 	req := &greetReq{}
 	res := &greetRes{}
 	defer func() {
@@ -62,4 +78,5 @@ func greetHandler(ctx node.Context) {
 	}
 
 	res.Message = req.Message
+	//})
 }

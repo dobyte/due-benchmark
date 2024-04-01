@@ -60,7 +60,7 @@ func initListen(proxy *client.Proxy) {
 
 // 组件启动处理器
 func startHandler(proxy *client.Proxy) {
-	doPressureTest(proxy, 200, 100000, 1024)
+	doPressureTest(proxy, 100, 10000, 1024)
 }
 
 // 消息回复处理器
@@ -72,7 +72,11 @@ func greetHandler(ctx *client.Context) {
 		return
 	}
 
-	atomic.AddInt64(&totalRecv, 1)
+	total := atomic.AddInt64(&totalRecv, 1)
+
+	if total%1000 == 0 {
+		fmt.Println("total recv: ", total)
+	}
 
 	wg.Done()
 }
@@ -97,7 +101,9 @@ func doPressureTest(proxy *client.Proxy, c int, n int, size int) {
 		}
 
 		go func(conn *client.Conn) {
-			defer conn.Close()
+			defer func() {
+				_ = conn.Close()
+			}()
 
 			for {
 				select {
@@ -116,7 +122,11 @@ func doPressureTest(proxy *client.Proxy, c int, n int, size int) {
 						return
 					}
 
-					atomic.AddInt64(&totalSent, 1)
+					total := atomic.AddInt64(&totalSent, 1)
+
+					if total%1000 == 0 {
+						fmt.Println("total sent: ", total)
+					}
 				}
 			}
 		}(conn)
@@ -129,6 +139,8 @@ func doPressureTest(proxy *client.Proxy, c int, n int, size int) {
 	}
 
 	wg.Wait()
+
+	close(chSeq)
 
 	totalTime := float64(time.Now().UnixNano()-startTime) / float64(time.Second)
 
