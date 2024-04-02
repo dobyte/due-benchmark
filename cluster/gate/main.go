@@ -7,6 +7,7 @@ import (
 	"github.com/dobyte/due/transport/rpcx/v2"
 	"github.com/dobyte/due/v2"
 	"github.com/dobyte/due/v2/cluster/gate"
+	"github.com/dobyte/due/v2/component/pprof"
 )
 
 func main() {
@@ -28,7 +29,7 @@ func main() {
 		gate.WithTransporter(transporter),
 	)
 	// 添加网关组件
-	container.Add(component)
+	container.Add(component, pprof.NewPProf())
 	// 启动容器
 	container.Serve()
 }

@@ -1,14 +1,13 @@
 package main
 
 import (
-	"fmt"
 	"github.com/dobyte/due/locate/redis/v2"
 	"github.com/dobyte/due/registry/consul/v2"
 	"github.com/dobyte/due/transport/rpcx/v2"
 	"github.com/dobyte/due/v2"
 	"github.com/dobyte/due/v2/cluster/node"
 	"github.com/dobyte/due/v2/log"
-	"sync/atomic"
+	"github.com/dobyte/due/v2/utils/xcall"
 )
 
 const greet = 1
@@ -55,28 +54,28 @@ var (
 )
 
 func greetHandler(ctx node.Context) {
-	total := atomic.AddInt64(&totalRecv, 1)
+	ctx = ctx.Clone()
 
-	if total%1000 == 0 {
-		fmt.Println("total recv: ", total)
-	}
+	xcall.Go(func() {
+		req := &greetReq{}
+		res := &greetRes{}
+		defer func() {
+			if err := ctx.Response(res); err != nil {
+				log.Errorf("response message failed: %v", err)
+			}
 
-	//ctx = ctx.Clone()
+			//v := atomic.AddInt64(&totalSent, 1)
+			//
+			////if v > 999999 {
+			//fmt.Println("total send: ", v)
+			////}
+		}()
 
-	//xcall.Go(func() {
-	req := &greetReq{}
-	res := &greetRes{}
-	defer func() {
-		if err := ctx.Response(res); err != nil {
-			log.Errorf("response message failed: %v", err)
+		if err := ctx.Parse(req); err != nil {
+			log.Errorf("parse request message failed: %v", err)
+			return
 		}
-	}()
 
-	if err := ctx.Parse(req); err != nil {
-		log.Errorf("parse request message failed: %v", err)
-		return
-	}
-
-	res.Message = req.Message
-	//})
+		res.Message = req.Message
+	})
 }

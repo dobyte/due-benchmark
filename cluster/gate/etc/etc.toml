@@ -3,6 +3,10 @@
 # 统一时区设置。项目中的时间获取请使用xtime.Now()
 timezone = "Local"
 
+[pprof]
+    # 监听地址
+    addr = ":8089"
+
 [cluster]
     [cluster.gate]
         # 实例ID，网关集群中唯一。不填写默认自动生成唯一的实例ID

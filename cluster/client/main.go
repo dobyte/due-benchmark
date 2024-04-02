@@ -9,6 +9,7 @@ import (
 	"github.com/dobyte/due/v2/cluster/client"
 	"github.com/dobyte/due/v2/eventbus"
 	"github.com/dobyte/due/v2/log"
+	"github.com/dobyte/due/v2/utils/xrand"
 	"github.com/dobyte/due/v2/utils/xtime"
 	"sync"
 	"sync/atomic"
@@ -18,11 +19,11 @@ import (
 const greet = 1
 
 var (
-	wg        sync.WaitGroup
+	wg        *sync.WaitGroup
 	startTime int64
 	totalSent int64
 	totalRecv int64
-	message   = fmt.Sprintf("I'm client, and the current time is: %s", xtime.Now().Format(xtime.DatetimeLayout))
+	message   string
 )
 
 type greetReq struct {
@@ -60,7 +61,7 @@ func initListen(proxy *client.Proxy) {
 
 // 组件启动处理器
 func startHandler(proxy *client.Proxy) {
-	doPressureTest(proxy, 100, 10000, 1024)
+	doPressureTest(proxy, 500, 1000000, 1024)
 }
 
 // 消息回复处理器
@@ -72,18 +73,15 @@ func greetHandler(ctx *client.Context) {
 		return
 	}
 
-	total := atomic.AddInt64(&totalRecv, 1)
-
-	if total%1000 == 0 {
-		fmt.Println("total recv: ", total)
-	}
+	atomic.AddInt64(&totalRecv, 1)
 
 	wg.Done()
 }
 
 // 执行压力测试
 func doPressureTest(proxy *client.Proxy, c int, n int, size int) {
-	wg = sync.WaitGroup{}
+	wg = &sync.WaitGroup{}
+	message = xrand.Letters(size)
 
 	atomic.StoreInt64(&totalSent, 0)
 	atomic.StoreInt64(&totalRecv, 0)
@@ -122,11 +120,7 @@ func doPressureTest(proxy *client.Proxy, c int, n int, size int) {
 						return
 					}
 
-					total := atomic.AddInt64(&totalSent, 1)
-
-					if total%1000 == 0 {
-						fmt.Println("total sent: ", total)
-					}
+					atomic.AddInt64(&totalSent, 1)
 				}
 			}
 		}(conn)
