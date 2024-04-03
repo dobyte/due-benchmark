@@ -61,7 +61,7 @@ func initListen(proxy *client.Proxy) {
 
 // 组件启动处理器
 func startHandler(proxy *client.Proxy) {
-	doPressureTest(proxy, 500, 1000000, 1024)
+	doPressureTest(proxy, 500, 1000000, 512)
 }
 
 // 消息回复处理器
@@ -141,9 +141,31 @@ func doPressureTest(proxy *client.Proxy, c int, n int, size int) {
 	fmt.Printf("server               : %s\n", "tcp")
 	fmt.Printf("concurrency          : %d\n", c)
 	fmt.Printf("latency              : %fs\n", totalTime)
-	fmt.Printf("data size            : %dkb\n", size/1024)
+	fmt.Printf("data size            : %s\n", convBytes(size))
 	fmt.Printf("sent requests        : %d\n", totalSent)
 	fmt.Printf("received requests    : %d\n", totalRecv)
 	fmt.Printf("throughput (TPS)     : %d\n", int64(float64(totalRecv)/totalTime))
 	fmt.Printf("--------------------------------\n")
+}
+
+func convBytes(bytes int) string {
+	const (
+		KB = 1024
+		MB = 1024 * KB
+		GB = 1024 * MB
+		TB = 1024 * GB
+	)
+
+	switch {
+	case bytes < KB:
+		return fmt.Sprintf("%.2fB", float64(bytes))
+	case bytes < MB:
+		return fmt.Sprintf("%.2fKB", float64(bytes)/KB)
+	case bytes < GB:
+		return fmt.Sprintf("%.2fMB", float64(bytes)/MB)
+	case bytes < TB:
+		return fmt.Sprintf("%.2fGB", float64(bytes)/GB)
+	default:
+		return fmt.Sprintf("%.2fTB", float64(bytes)/TB)
+	}
 }
