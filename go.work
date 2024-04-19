@@ -9,7 +9,7 @@ use (
 	../due/network/tcp
 	../due/locate/redis
 	../due/registry/consul
-	../due/transport/rpcx
+	../due/transport/kitex
 	../due/eventbus/nats
 	../due/config/etcd
 )

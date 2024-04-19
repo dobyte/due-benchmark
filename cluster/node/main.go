@@ -3,10 +3,10 @@ package main
 import (
 	"github.com/dobyte/due/locate/redis/v2"
 	"github.com/dobyte/due/registry/consul/v2"
-	"github.com/dobyte/due/transport/rpcx/v2"
 	"github.com/dobyte/due/v2"
 	"github.com/dobyte/due/v2/cluster/node"
 	"github.com/dobyte/due/v2/log"
+	"github.com/dobyte/due/v2/transport/drpc"
 	"github.com/dobyte/due/v2/utils/xcall"
 )
 
@@ -20,7 +20,7 @@ func main() {
 	// 创建服务发现
 	registry := consul.NewRegistry()
 	// 创建RPC传输器
-	transporter := rpcx.NewTransporter()
+	transporter := drpc.NewTransporter()
 	// 创建节点组件
 	component := node.NewNode(
 		node.WithLocator(locator),

@@ -61,7 +61,7 @@ func initListen(proxy *client.Proxy) {
 
 // 组件启动处理器
 func startHandler(proxy *client.Proxy) {
-	doPressureTest(proxy, 500, 1000000, 512)
+	doPressureTest(proxy, 1000, 1000000, 1024)
 }
 
 // 消息回复处理器
