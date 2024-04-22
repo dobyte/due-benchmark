@@ -7,7 +7,7 @@ import (
 	"github.com/dobyte/due/v2/cluster/node"
 	"github.com/dobyte/due/v2/log"
 	"github.com/dobyte/due/v2/transport/drpc"
-	"github.com/dobyte/due/v2/utils/xcall"
+	"sync"
 )
 
 const greet = 1
@@ -48,34 +48,33 @@ type greetRes struct {
 	Message string `json:"message"`
 }
 
-var (
-	totalRecv int64
-	totalSent int64
-)
+var reqPool = sync.Pool{New: func() any {
+	return &greetReq{}
+}}
+
+var resPool = sync.Pool{New: func() any {
+	return &greetRes{}
+}}
 
 func greetHandler(ctx node.Context) {
-	ctx = ctx.Clone()
+	//ctx = ctx.Clone()
 
-	xcall.Go(func() {
-		req := &greetReq{}
-		res := &greetRes{}
-		defer func() {
-			if err := ctx.Response(res); err != nil {
-				log.Errorf("response message failed: %v", err)
-			}
-
-			//v := atomic.AddInt64(&totalSent, 1)
-			//
-			////if v > 999999 {
-			//fmt.Println("total send: ", v)
-			////}
-		}()
-
-		if err := ctx.Parse(req); err != nil {
-			log.Errorf("parse request message failed: %v", err)
-			return
+	//xcall.Go(func() {
+	req := reqPool.Get().(*greetReq)
+	res := resPool.Get().(*greetRes)
+	defer reqPool.Put(req)
+	defer resPool.Put(res)
+	defer func() {
+		if err := ctx.Response(res); err != nil {
+			log.Errorf("response message failed: %v", err)
 		}
+	}()
 
-		res.Message = req.Message
-	})
+	if err := ctx.Parse(req); err != nil {
+		log.Errorf("parse request message failed: %v", err)
+		return
+	}
+
+	res.Message = req.Message
+	//})
 }
