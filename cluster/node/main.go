@@ -57,15 +57,10 @@ var resPool = sync.Pool{New: func() any {
 	return &greetRes{}
 }}
 
-var (
-	startTime int64
-	totalRecv int64
-)
-
 func greetHandler(ctx node.Context) {
-	//ctx = ctx.Clone()
+	ctx = ctx.Clone()
 
-	//xcall.Go(func() {
+	//task.AddTask(func() {
 	req := reqPool.Get().(*greetReq)
 	res := resPool.Get().(*greetRes)
 	defer reqPool.Put(req)
@@ -81,11 +76,14 @@ func greetHandler(ctx node.Context) {
 		return
 	}
 
-	//analyze()
-
 	res.Message = req.Message
 	//})
 }
+
+var (
+	startTime int64
+	totalRecv int64
+)
 
 // TPS数据数据分析
 func analyze() {
