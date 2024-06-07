@@ -1,6 +1,7 @@
 package main
 
 import (
+	"due-benchmark/cluster/quota"
 	"fmt"
 	"github.com/dobyte/due/eventbus/nats/v2"
 	"github.com/dobyte/due/network/tcp/v2"
@@ -61,7 +62,7 @@ func initListen(proxy *client.Proxy) {
 
 // 组件启动处理器
 func startHandler(proxy *client.Proxy) {
-	doPressureTest(proxy, 1, 1, 1024)
+	doPressureTest(proxy)
 }
 
 // 消息回复处理器
@@ -79,19 +80,19 @@ func greetHandler(ctx *client.Context) {
 }
 
 // 执行压力测试
-func doPressureTest(proxy *client.Proxy, c int, n int, size int) {
+func doPressureTest(proxy *client.Proxy) {
 	wg = &sync.WaitGroup{}
-	message = xrand.Letters(size)
+	message = xrand.Letters(quota.Size)
 
 	atomic.StoreInt64(&totalSent, 0)
 	atomic.StoreInt64(&totalRecv, 0)
 
-	wg.Add(n)
+	wg.Add(quota.Requests)
 
-	chSeq := make(chan int32, n)
+	chSeq := make(chan int32, quota.Requests)
 
 	// 创建连接
-	for i := 0; i < c; i++ {
+	for i := 0; i < quota.Concurrency; i++ {
 		conn, err := proxy.Dial()
 		if err != nil {
 			log.Errorf("gate connect failed: %v", err)
@@ -128,7 +129,7 @@ func doPressureTest(proxy *client.Proxy, c int, n int, size int) {
 
 	startTime = xtime.Now().UnixNano()
 
-	for i := 1; i <= n; i++ {
+	for i := 1; i <= quota.Requests; i++ {
 		chSeq <- int32(i)
 	}
 
@@ -138,34 +139,12 @@ func doPressureTest(proxy *client.Proxy, c int, n int, size int) {
 
 	totalTime := float64(time.Now().UnixNano()-startTime) / float64(time.Second)
 
-	fmt.Printf("server               : %s\n", "tcp")
-	fmt.Printf("concurrency          : %d\n", c)
+	fmt.Printf("server               : %s\n", quota.Protocol)
+	fmt.Printf("concurrency          : %d\n", quota.Concurrency)
 	fmt.Printf("latency              : %fs\n", totalTime)
-	fmt.Printf("data size            : %s\n", convBytes(size))
+	fmt.Printf("data size            : %s\n", quota.ConvBytes(quota.Size))
 	fmt.Printf("sent requests        : %d\n", totalSent)
 	fmt.Printf("received requests    : %d\n", totalRecv)
 	fmt.Printf("throughput (TPS)     : %d\n", int64(float64(totalRecv)/totalTime))
 	fmt.Printf("--------------------------------\n")
-}
-
-func convBytes(bytes int) string {
-	const (
-		KB = 1024
-		MB = 1024 * KB
-		GB = 1024 * MB
-		TB = 1024 * GB
-	)
-
-	switch {
-	case bytes < KB:
-		return fmt.Sprintf("%.2fB", float64(bytes))
-	case bytes < MB:
-		return fmt.Sprintf("%.2fKB", float64(bytes)/KB)
-	case bytes < GB:
-		return fmt.Sprintf("%.2fMB", float64(bytes)/MB)
-	case bytes < TB:
-		return fmt.Sprintf("%.2fGB", float64(bytes)/GB)
-	default:
-		return fmt.Sprintf("%.2fTB", float64(bytes)/TB)
-	}
 }
