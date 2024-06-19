@@ -4,11 +4,9 @@ import "fmt"
 
 const (
 	Protocol    = "tcp" // 协议
-	Concurrency = 1000  // 并发数
-	//Concurrency = 1 // 并发数
-	Requests = 1000000 // 请求数
-	//Requests = 2    // 请求数
-	Size = 1024 // 包大小
+	Concurrency = 1     // 并发数
+	Requests    = 2     // 请求数
+	Size        = 1024  // 包大小
 )
 
 func ConvBytes(bytes int) string {

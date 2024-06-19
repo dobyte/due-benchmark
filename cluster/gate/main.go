@@ -7,11 +7,10 @@ import (
 	"github.com/dobyte/due/v2"
 	"github.com/dobyte/due/v2/cluster/gate"
 	"github.com/dobyte/due/v2/component/pprof"
-	"github.com/dobyte/due/v2/mode"
 )
 
 func main() {
-	mode.SetMode(mode.DebugMode)
+	//mode.SetMode(mode.DebugMode)
 	// 创建容器
 	container := due.NewContainer()
 	// 创建服务器
