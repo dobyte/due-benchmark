@@ -1,17 +1,13 @@
 package main
 
 import (
-	"due-benchmark/cluster/quota"
-	"fmt"
 	"github.com/dobyte/due/locate/redis/v2"
 	"github.com/dobyte/due/registry/consul/v2"
 	"github.com/dobyte/due/v2"
 	"github.com/dobyte/due/v2/cluster/node"
+	"github.com/dobyte/due/v2/component/pprof"
 	"github.com/dobyte/due/v2/log"
-	"github.com/dobyte/due/v2/utils/xtime"
 	"sync"
-	"sync/atomic"
-	"time"
 )
 
 const greet = 1
@@ -24,14 +20,16 @@ func main() {
 	// 创建服务发现
 	registry := consul.NewRegistry()
 	// 创建节点组件
-	component := node.NewNode(
+	component1 := node.NewNode(
 		node.WithLocator(locator),
 		node.WithRegistry(registry),
 	)
+	// 创建PProf组件
+	component2 := pprof.NewPProf()
 	// 初始化监听
-	initListen(component.Proxy())
+	initListen(component1.Proxy())
 	// 添加节点组件
-	container.Add(component)
+	container.Add(component1, component2)
 	// 启动容器
 	container.Serve()
 }
@@ -78,29 +76,4 @@ func greetHandler(ctx node.Context) {
 
 	res.Message = req.Message
 	//})
-}
-
-var (
-	startTime int64
-	totalRecv int64
-)
-
-// TPS数据数据分析
-func analyze() {
-	switch atomic.AddInt64(&totalRecv, 1) {
-	case 1:
-		startTime = xtime.Now().UnixNano()
-	case quota.Requests:
-		totalTime := float64(time.Now().UnixNano()-startTime) / float64(time.Second)
-
-		fmt.Printf("server               : %s\n", quota.Protocol)
-		fmt.Printf("concurrency          : %d\n", quota.Concurrency)
-		fmt.Printf("latency              : %fs\n", totalTime)
-		fmt.Printf("data size            : %s\n", quota.ConvBytes(quota.Size))
-		fmt.Printf("received requests    : %d\n", totalRecv)
-		fmt.Printf("throughput (TPS)     : %d\n", int64(float64(totalRecv)/totalTime))
-		fmt.Printf("--------------------------------\n")
-
-		atomic.StoreInt64(&totalRecv, 0)
-	}
 }

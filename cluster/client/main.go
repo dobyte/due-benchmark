@@ -4,7 +4,7 @@ import (
 	"due-benchmark/cluster/quota"
 	"fmt"
 	"github.com/dobyte/due/eventbus/nats/v2"
-	"github.com/dobyte/due/network/tcp/v2"
+	"github.com/dobyte/due/network/ws/v2"
 	"github.com/dobyte/due/v2"
 	"github.com/dobyte/due/v2/cluster"
 	"github.com/dobyte/due/v2/cluster/client"
@@ -42,7 +42,7 @@ func main() {
 	container := due.NewContainer()
 	// 创建客户端组件
 	component := client.NewClient(
-		client.WithClient(tcp.NewClient()),
+		client.WithClient(ws.NewClient()),
 	)
 	// 初始化监听
 	initListen(component.Proxy())
