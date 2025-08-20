@@ -5,6 +5,7 @@ import (
 	"github.com/dobyte/due/registry/consul/v2"
 	"github.com/dobyte/due/v2"
 	"github.com/dobyte/due/v2/cluster/node"
+	"github.com/dobyte/due/v2/component/pprof"
 	"github.com/dobyte/due/v2/log"
 	"sync"
 )
@@ -19,14 +20,16 @@ func main() {
 	// 创建服务发现
 	registry := consul.NewRegistry()
 	// 创建节点组件
-	component := node.NewNode(
+	component1 := node.NewNode(
 		node.WithLocator(locator),
 		node.WithRegistry(registry),
 	)
+	// 创建PProf组件
+	component2 := pprof.NewPProf()
 	// 初始化监听
-	initListen(component.Proxy())
+	initListen(component1.Proxy())
 	// 添加节点组件
-	container.Add(component)
+	container.Add(component1, component2)
 	// 启动容器
 	container.Serve()
 }
@@ -53,9 +56,9 @@ var resPool = sync.Pool{New: func() any {
 }}
 
 func greetHandler(ctx node.Context) {
-	//ctx = ctx.Clone()
+	ctx = ctx.Clone()
 
-	//xcall.Go(func() {
+	//task.AddTask(func() {
 	req := reqPool.Get().(*greetReq)
 	res := resPool.Get().(*greetRes)
 	defer reqPool.Put(req)

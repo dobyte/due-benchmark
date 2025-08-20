@@ -61,7 +61,56 @@ func initListen(proxy *client.Proxy) {
 
 // 组件启动处理器
 func startHandler(proxy *client.Proxy) {
-	doPressureTest(proxy, 1000, 1000000, 1024)
+	samples := []struct {
+		c    int // 并发数
+		n    int // 请求数
+		size int // 数据包大小
+	}{
+		{
+			c:    50,
+			n:    1000000,
+			size: 1024,
+		},
+		{
+			c:    100,
+			n:    1000000,
+			size: 1024,
+		},
+		{
+			c:    200,
+			n:    1000000,
+			size: 1024,
+		},
+		{
+			c:    300,
+			n:    1000000,
+			size: 1024,
+		},
+		{
+			c:    400,
+			n:    1000000,
+			size: 1024,
+		},
+		{
+			c:    500,
+			n:    1000000,
+			size: 1024,
+		},
+		{
+			c:    1000,
+			n:    1000000,
+			size: 1024,
+		},
+		{
+			c:    1000,
+			n:    1000000,
+			size: 2 * 1024,
+		},
+	}
+
+	for _, sample := range samples {
+		doPressureTest(proxy, sample.c, sample.n, sample.size)
+	}
 }
 
 // 消息回复处理器
@@ -79,7 +128,7 @@ func greetHandler(ctx *client.Context) {
 }
 
 // 执行压力测试
-func doPressureTest(proxy *client.Proxy, c int, n int, size int) {
+func doPressureTest(proxy *client.Proxy, c, n, size int) {
 	wg = &sync.WaitGroup{}
 	message = xrand.Letters(size)
 
@@ -138,7 +187,7 @@ func doPressureTest(proxy *client.Proxy, c int, n int, size int) {
 
 	totalTime := float64(time.Now().UnixNano()-startTime) / float64(time.Second)
 
-	fmt.Printf("server               : %s\n", "tcp")
+	fmt.Printf("server               : %s\n", proxy.Client().Protocol())
 	fmt.Printf("concurrency          : %d\n", c)
 	fmt.Printf("latency              : %fs\n", totalTime)
 	fmt.Printf("data size            : %s\n", convBytes(size))

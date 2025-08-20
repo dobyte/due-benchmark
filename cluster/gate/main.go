@@ -19,13 +19,15 @@ func main() {
 	// 创建服务发现
 	registry := consul.NewRegistry()
 	// 创建网关组件
-	component := gate.NewGate(
+	component1 := gate.NewGate(
 		gate.WithServer(server),
 		gate.WithLocator(locator),
 		gate.WithRegistry(registry),
 	)
+	// 创建PProf组件
+	component2 := pprof.NewPProf()
 	// 添加网关组件
-	container.Add(component, pprof.NewPProf())
+	container.Add(component1, component2)
 	// 启动容器
 	container.Serve()
 }

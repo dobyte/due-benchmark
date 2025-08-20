@@ -8,7 +8,7 @@ timezone = "Local"
         # 实例ID，网关集群中唯一。不填写默认自动生成唯一的实例ID
         id = ""
         # 实例名称
-        name = "node"
+        name = "benchmark node"
         # RPC调用超时时间
         timeout = "1s"
         # 编解码器。可选：json | proto
