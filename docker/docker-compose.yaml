@@ -72,6 +72,20 @@ services:
       - '4222:4222'
       - '6222:6222'
       - '8222:8222'
+  nacos:
+    image: nacos/nacos-server:latest
+    container_name: dev-nacos
+    environment:
+      - PREFER_HOST_MODE=hostname
+      - MODE=standalone
+      - NACOS_AUTH_IDENTITY_KEY=serverIdentity
+      - NACOS_AUTH_IDENTITY_VALUE=security
+      - NACOS_AUTH_TOKEN=SecretKey012345678901234567890123456789012345678901234567890123456789
+    volumes:
+      - ./nacos:/home/nacos/logs
+    ports:
+      - '8848:8848'
+      - '9848:9848'
 networks:
   middleware:
     driver: bridge

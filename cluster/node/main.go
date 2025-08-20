@@ -6,7 +6,6 @@ import (
 	"github.com/dobyte/due/v2"
 	"github.com/dobyte/due/v2/cluster/node"
 	"github.com/dobyte/due/v2/log"
-	"github.com/dobyte/due/v2/transport/drpc"
 	"sync"
 )
 
@@ -19,13 +18,10 @@ func main() {
 	locator := redis.NewLocator()
 	// 创建服务发现
 	registry := consul.NewRegistry()
-	// 创建RPC传输器
-	transporter := drpc.NewTransporter()
 	// 创建节点组件
 	component := node.NewNode(
 		node.WithLocator(locator),
 		node.WithRegistry(registry),
-		node.WithTransporter(transporter),
 	)
 	// 初始化监听
 	initListen(component.Proxy())

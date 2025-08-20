@@ -7,7 +7,6 @@ import (
 	"github.com/dobyte/due/v2"
 	"github.com/dobyte/due/v2/cluster/gate"
 	"github.com/dobyte/due/v2/component/pprof"
-	"github.com/dobyte/due/v2/transport/drpc"
 )
 
 func main() {
@@ -19,14 +18,11 @@ func main() {
 	locator := redis.NewLocator()
 	// 创建服务发现
 	registry := consul.NewRegistry()
-	// 创建RPC传输器
-	transporter := drpc.NewTransporter()
 	// 创建网关组件
 	component := gate.NewGate(
 		gate.WithServer(server),
 		gate.WithLocator(locator),
 		gate.WithRegistry(registry),
-		gate.WithTransporter(transporter),
 	)
 	// 添加网关组件
 	container.Add(component, pprof.NewPProf())
