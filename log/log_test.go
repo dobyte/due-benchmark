@@ -1,13 +1,13 @@
 package log_test
 
 import (
-	"bufio"
 	"os"
-	"sync"
 	"testing"
 
 	"github.com/arthurkiller/rollingwriter"
-	"github.com/dobyte/due/v2/log"
+	"github.com/dobyte/due-benchmark/log"
+	duelog "github.com/dobyte/due/v2/log"
+	duelogfile "github.com/dobyte/due/v2/log/file"
 	gologger "github.com/donnie4w/go-logger/logger"
 )
 
@@ -16,183 +16,138 @@ const (
 	debugText = ">>>>>>this is debug message>>>>>>this is debug message"
 )
 
+var (
+	stdSerialLogger             *log.StdLogger
+	stdParallelLogger           *log.StdLogger
+	dueSerialLogger             duelog.Logger
+	dueParallelLogger           duelog.Logger
+	rollingWriterSerialLogger   rollingwriter.RollingWriter
+	rollingWriterParallelLogger rollingwriter.RollingWriter
+	goLoggerSerialLogger        *gologger.Logging
+	goLoggerParallelLogger      *gologger.Logging
+)
+
 func init() {
 	if _, err := os.Stat(outDir); err != nil {
 		_ = os.MkdirAll(outDir, 0755)
 	}
-}
 
-func Benchmark_Std_SerialIO(b *testing.B) {
-	out, err := os.OpenFile("./temp/s_std.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644)
-	if err != nil {
-		b.Fatal(err)
-	}
-	defer out.Close()
+	stdSerialLogger = log.NewStdLogger("./temp/s_std.log")
 
-	w := bufio.NewWriter(out)
+	stdParallelLogger = log.NewStdLogger("./temp/p_std.log")
 
-	b.ReportAllocs()
-	b.ResetTimer()
+	dueSerialLogger = duelog.NewLogger(
+		duelog.WithLevel(duelog.LevelDebug),
+		duelog.WithTerminals(duelog.TerminalFile),
+		duelog.WithTimeFormat("2006/01/02 15:04:05"),
+		duelog.WithSyncers(duelogfile.NewSyncer(
+			duelogfile.WithPath("./temp/s_due.log"),
+			duelogfile.WithMaxSize(500*1024*1024),
+		)),
+	)
 
-	for i := 0; i < b.N; i++ {
-		if _, err = w.WriteString(debugText + "\n"); err != nil {
-			b.Fatal(err)
-		}
+	dueParallelLogger = duelog.NewLogger(
+		duelog.WithLevel(duelog.LevelDebug),
+		duelog.WithTerminals(duelog.TerminalFile),
+		duelog.WithTimeFormat("2006/01/02 15:04:05"),
+		duelog.WithSyncers(duelogfile.NewSyncer(
+			duelogfile.WithPath("./temp/p_due.log"),
+			duelogfile.WithMaxSize(500*1024*1024),
+		)),
+	)
 
-		if err = w.Flush(); err != nil {
-			b.Fatal(err)
-		}
-	}
-}
-
-func Benchmark_Std_ParallelIO(b *testing.B) {
-	out, err := os.OpenFile("./temp/p_std.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644)
-	if err != nil {
-		b.Fatal(err)
-	}
-	defer out.Close()
-
-	w := bufio.NewWriter(out)
-
-	var i int64 = 0
-
-	mu := &sync.Mutex{}
-
-	b.SetParallelism(20)
-	b.ResetTimer()
-	b.RunParallel(func(pb *testing.PB) {
-		if i == 30000 {
-			return
-		}
-		i++
-		for pb.Next() {
-			func() {
-				mu.Lock()
-				defer mu.Unlock()
-
-				if _, err = w.Write([]byte(debugText + "\n")); err != nil {
-					b.Fatal(err)
-				}
-
-				if err = w.Flush(); err != nil {
-					b.Fatal(err)
-				}
-			}()
-		}
-	})
-}
-
-//var (
-//	logger = log.NewLogger(
-//		log.WithLevel(log.LevelDebug),
-//		log.WithSyncers(file.NewSyncer(
-//			file.WithPath("./temp/s_due.log"),
-//			file.WithMaxSize(500*1024*1024),
-//		)),
-//	)
-//)
-
-func Benchmark_Due_SerialIO(b *testing.B) {
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		log.Info(debugText)
-	}
-}
-
-func Benchmark_Due_ParallelIO(b *testing.B) {
-	var i int64 = 0
-
-	b.SetParallelism(20)
-	b.ResetTimer()
-	b.RunParallel(func(pb *testing.PB) {
-		if i == 30000 {
-			return
-		}
-		i++
-		for pb.Next() {
-			log.Info(debugText)
-		}
-	})
-}
-
-func Benchmark_RollingWriter_SerialIO(b *testing.B) {
-	w, err := rollingwriter.NewWriterFromConfig(&rollingwriter.Config{
+	rollingWriterSerialLogger, _ = rollingwriter.NewWriterFromConfig(&rollingwriter.Config{
 		LogPath:       "./temp",
 		FileName:      "s_rollingwriter",
 		RollingPolicy: rollingwriter.WithoutRolling,
 		WriterMode:    "lock",
 	})
-	if err != nil {
-		b.Fatal(err)
-	}
-	defer w.Close()
 
+	rollingWriterParallelLogger, _ = rollingwriter.NewWriterFromConfig(&rollingwriter.Config{
+		LogPath:       "./temp",
+		FileName:      "p_rollingwriter",
+		RollingPolicy: rollingwriter.WithoutRolling,
+		WriterMode:    "lock",
+	})
+
+	goLoggerSerialLogger = gologger.NewLogger()
+	goLoggerSerialLogger.SetRollingFile("./temp", "s_gologger.log", 500, gologger.MB)
+	goLoggerSerialLogger.SetConsole(false)
+
+	goLoggerParallelLogger = gologger.NewLogger()
+	goLoggerParallelLogger.SetRollingFile("./temp", "p_gologger.log", 500, gologger.MB)
+	goLoggerParallelLogger.SetConsole(false)
+}
+
+func Benchmark_Std_SerialIO(b *testing.B) {
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_, _ = stdSerialLogger.Write([]byte(debugText + "\n"))
+	}
+}
+
+func Benchmark_Std_ParallelIO(b *testing.B) {
+	b.SetParallelism(20)
+	b.ResetTimer()
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			_, _ = stdParallelLogger.Write([]byte(debugText + "\n"))
+		}
+	})
+}
+
+func Benchmark_Due_SerialIO(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		if _, err = w.Write([]byte(debugText)); err != nil {
-			b.Fatal(err)
+		dueSerialLogger.Debug(debugText)
+	}
+}
+
+func Benchmark_Due_ParallelIO(b *testing.B) {
+	b.SetParallelism(20)
+	b.ResetTimer()
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			dueParallelLogger.Info(debugText)
 		}
+	})
+}
+
+func Benchmark_RollingWriter_SerialIO(b *testing.B) {
+	b.ReportAllocs()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_, _ = rollingWriterSerialLogger.Write([]byte(debugText))
 	}
 }
 
 func Benchmark_RollingWriter_ParallelIO(b *testing.B) {
-	w, err := rollingwriter.NewWriterFromConfig(&rollingwriter.Config{
-		LogPath:       "./temp",
-		FileName:      "p_rollingwriter",
-		RollingPolicy: rollingwriter.WithoutRolling,
-		WriterMode:    "buffer",
-	})
-	if err != nil {
-		b.Fatal(err)
-	}
-	defer w.Close()
-
-	var i int64 = 0
-
 	b.SetParallelism(20)
 	b.ResetTimer()
 	b.RunParallel(func(pb *testing.PB) {
-		if i == 30000 {
-			return
-		}
-		i++
 		for pb.Next() {
-			if _, err = w.Write([]byte(debugText)); err != nil {
-				b.Fatal(err)
-			}
+			_, _ = rollingWriterParallelLogger.Write([]byte(debugText))
 		}
 	})
 }
 
-func Benchmark_Gologger_SerialIO(b *testing.B) {
-	logger := gologger.NewLogger()
-	logger.SetRollingFile("./temp", "s_gologger.log", 500, gologger.MB)
-	logger.SetConsole(false)
+func Benchmark_GoLogger_SerialIO(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		logger.Debug(debugText)
+		goLoggerSerialLogger.Debug(debugText)
 	}
 }
 
-func Benchmark_Gologger_ParallelIO(b *testing.B) {
-	logger := gologger.NewLogger()
-	logger.SetRollingFile("./temp", "p_gologger.log", 500, gologger.MB)
-	logger.SetConsole(false)
-
-	var i int64 = 0
-
+func Benchmark_GoLogger_ParallelIO(b *testing.B) {
 	b.SetParallelism(20)
 	b.ResetTimer()
 	b.RunParallel(func(pb *testing.PB) {
-		if i == 30000 {
-			return
-		}
-		i++
 		for pb.Next() {
-			logger.Debug(debugText)
+			goLoggerParallelLogger.Debug(debugText)
 		}
 	})
 }
