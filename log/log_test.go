@@ -9,6 +9,9 @@ import (
 	duelog "github.com/dobyte/due/v2/log"
 	duelogfile "github.com/dobyte/due/v2/log/file"
 	gologger "github.com/donnie4w/go-logger/logger"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 const (
@@ -19,6 +22,10 @@ const (
 var (
 	stdSerialLogger             *log.StdLogger
 	stdParallelLogger           *log.StdLogger
+	zapSerialLogger             *zap.Logger
+	zapParallelLogger           *zap.Logger
+	zapSerialSugaredLogger      *zap.SugaredLogger
+	zapParallelSugaredLogger    *zap.SugaredLogger
 	dueSerialLogger             duelog.Logger
 	dueParallelLogger           duelog.Logger
 	rollingWriterSerialLogger   rollingwriter.RollingWriter
@@ -35,6 +42,54 @@ func init() {
 	stdSerialLogger = log.NewStdLogger("./temp/s_std.log")
 
 	stdParallelLogger = log.NewStdLogger("./temp/p_std.log")
+
+	zapSerialLogger = zap.New(zapcore.NewCore(
+		zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig()),
+		zapcore.AddSync(&lumberjack.Logger{
+			Filename:   "./temp/s_zap.log",
+			MaxSize:    500, // MB
+			MaxBackups: 3,
+			MaxAge:     28, // 天
+			Compress:   true,
+		}),
+		zap.DebugLevel,
+	))
+
+	zapParallelLogger = zap.New(zapcore.NewCore(
+		zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig()),
+		zapcore.AddSync(&lumberjack.Logger{
+			Filename:   "./temp/p_zap.log",
+			MaxSize:    500, // MB
+			MaxBackups: 3,
+			MaxAge:     28, // 天
+			Compress:   true,
+		}),
+		zap.DebugLevel,
+	))
+
+	zapSerialSugaredLogger = zap.New(zapcore.NewCore(
+		zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig()),
+		zapcore.AddSync(&lumberjack.Logger{
+			Filename:   "./temp/s_zap_suger.log",
+			MaxSize:    500, // MB
+			MaxBackups: 3,
+			MaxAge:     28, // 天
+			Compress:   true,
+		}),
+		zap.DebugLevel,
+	)).Sugar()
+
+	zapParallelSugaredLogger = zap.New(zapcore.NewCore(
+		zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig()),
+		zapcore.AddSync(&lumberjack.Logger{
+			Filename:   "./temp/p_zap_suger.log",
+			MaxSize:    500, // MB
+			MaxBackups: 3,
+			MaxAge:     28, // 天
+			Compress:   true,
+		}),
+		zap.DebugLevel,
+	)).Sugar()
 
 	dueSerialLogger = duelog.NewLogger(
 		duelog.WithLevel(duelog.LevelDebug),
@@ -98,6 +153,46 @@ func Benchmark_Std_ParallelIO(b *testing.B) {
 	})
 }
 
+func Benchmark_Zap_SerialIO(b *testing.B) {
+	b.ReportAllocs()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		zapSerialLogger.Debug(debugText)
+	}
+	zapSerialLogger.Sync()
+}
+
+func Benchmark_Zap_ParallelIO(b *testing.B) {
+	b.SetParallelism(20)
+	b.ResetTimer()
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			zapParallelLogger.Info(debugText)
+		}
+	})
+	zapParallelLogger.Sync()
+}
+
+func Benchmark_Zap_Suger_SerialIO(b *testing.B) {
+	b.ReportAllocs()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		zapSerialSugaredLogger.Debug(debugText)
+	}
+	zapSerialSugaredLogger.Sync()
+}
+
+func Benchmark_Zap_Suger_ParallelIO(b *testing.B) {
+	b.SetParallelism(20)
+	b.ResetTimer()
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			zapParallelSugaredLogger.Info(debugText)
+		}
+	})
+	zapParallelSugaredLogger.Sync()
+}
+
 func Benchmark_Due_SerialIO(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
@@ -111,7 +206,7 @@ func Benchmark_Due_ParallelIO(b *testing.B) {
 	b.ResetTimer()
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
-			dueParallelLogger.Info(debugText)
+			dueParallelLogger.Debug(debugText)
 		}
 	})
 }
