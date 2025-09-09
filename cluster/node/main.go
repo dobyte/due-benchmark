@@ -1,13 +1,14 @@
 package main
 
 import (
+	"sync"
+
 	"github.com/dobyte/due/locate/redis/v2"
 	"github.com/dobyte/due/registry/consul/v2"
 	"github.com/dobyte/due/v2"
 	"github.com/dobyte/due/v2/cluster/node"
 	"github.com/dobyte/due/v2/component/pprof"
 	"github.com/dobyte/due/v2/log"
-	"sync"
 )
 
 const greet = 1
@@ -56,13 +57,9 @@ var resPool = sync.Pool{New: func() any {
 }}
 
 func greetHandler(ctx node.Context) {
-	ctx = ctx.Clone()
+	req := &greetReq{}
+	res := &greetRes{}
 
-	//task.AddTask(func() {
-	req := reqPool.Get().(*greetReq)
-	res := resPool.Get().(*greetRes)
-	defer reqPool.Put(req)
-	defer resPool.Put(res)
 	defer func() {
 		if err := ctx.Response(res); err != nil {
 			log.Errorf("response message failed: %v", err)
@@ -75,5 +72,4 @@ func greetHandler(ctx node.Context) {
 	}
 
 	res.Message = req.Message
-	//})
 }

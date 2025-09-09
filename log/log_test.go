@@ -44,7 +44,7 @@ func init() {
 	stdParallelLogger = log.NewStdLogger("./temp/p_std.log")
 
 	zapSerialLogger = zap.New(zapcore.NewCore(
-		zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig()),
+		zapcore.NewJSONEncoder(zap.NewDevelopmentEncoderConfig()),
 		zapcore.AddSync(&lumberjack.Logger{
 			Filename:   "./temp/s_zap.log",
 			MaxSize:    500, // MB
@@ -56,7 +56,7 @@ func init() {
 	))
 
 	zapParallelLogger = zap.New(zapcore.NewCore(
-		zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig()),
+		zapcore.NewJSONEncoder(zap.NewDevelopmentEncoderConfig()),
 		zapcore.AddSync(&lumberjack.Logger{
 			Filename:   "./temp/p_zap.log",
 			MaxSize:    500, // MB
@@ -68,7 +68,7 @@ func init() {
 	))
 
 	zapSerialSugaredLogger = zap.New(zapcore.NewCore(
-		zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig()),
+		zapcore.NewJSONEncoder(zap.NewDevelopmentEncoderConfig()),
 		zapcore.AddSync(&lumberjack.Logger{
 			Filename:   "./temp/s_zap_suger.log",
 			MaxSize:    500, // MB
@@ -80,7 +80,7 @@ func init() {
 	)).Sugar()
 
 	zapParallelSugaredLogger = zap.New(zapcore.NewCore(
-		zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig()),
+		zapcore.NewJSONEncoder(zap.NewDevelopmentEncoderConfig()),
 		zapcore.AddSync(&lumberjack.Logger{
 			Filename:   "./temp/p_zap_suger.log",
 			MaxSize:    500, // MB

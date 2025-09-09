@@ -2,6 +2,10 @@ package main
 
 import (
 	"fmt"
+	"sync"
+	"sync/atomic"
+	"time"
+
 	"github.com/dobyte/due/eventbus/nats/v2"
 	"github.com/dobyte/due/network/tcp/v2"
 	"github.com/dobyte/due/v2"
@@ -11,9 +15,6 @@ import (
 	"github.com/dobyte/due/v2/log"
 	"github.com/dobyte/due/v2/utils/xrand"
 	"github.com/dobyte/due/v2/utils/xtime"
-	"sync"
-	"sync/atomic"
-	"time"
 )
 
 const greet = 1
@@ -140,7 +141,7 @@ func doPressureTest(proxy *client.Proxy, c, n, size int) {
 	chSeq := make(chan int32, n)
 
 	// 创建连接
-	for i := 0; i < c; i++ {
+	for range c {
 		conn, err := proxy.Dial()
 		if err != nil {
 			log.Errorf("gate connect failed: %v", err)
@@ -153,24 +154,21 @@ func doPressureTest(proxy *client.Proxy, c, n, size int) {
 			}()
 
 			for {
-				select {
-				case seq, ok := <-chSeq:
-					if !ok {
-						return
-					}
-
-					err := conn.Push(&cluster.Message{
-						Route: 1,
-						Seq:   seq,
-						Data:  &greetReq{Message: message},
-					})
-					if err != nil {
-						log.Errorf("push message failed: %v", err)
-						return
-					}
-
-					atomic.AddInt64(&totalSent, 1)
+				seq, ok := <-chSeq
+				if !ok {
+					return
 				}
+
+				if err := conn.Push(&cluster.Message{
+					Route: 1,
+					Seq:   seq,
+					Data:  &greetReq{Message: message},
+				}); err != nil {
+					log.Errorf("push message failed: %v", err)
+					return
+				}
+
+				atomic.AddInt64(&totalSent, 1)
 			}
 		}(conn)
 	}
