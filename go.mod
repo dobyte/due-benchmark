@@ -4,17 +4,15 @@ go 1.23.5
 
 require (
 	github.com/arthurkiller/rollingwriter v1.1.3
-	github.com/dobyte/due/eventbus/nats/v2 v2.0.0-20250909033853-924fe2f446e5
-	github.com/dobyte/due/locate/redis/v2 v2.0.0-20250909033853-924fe2f446e5
-	github.com/dobyte/due/network/tcp/v2 v2.0.0-20250909033853-924fe2f446e5
-	github.com/dobyte/due/registry/consul/v2 v2.0.0-20250909033853-924fe2f446e5
-	github.com/dobyte/due/v2 v2.3.3
+	github.com/dobyte/due/eventbus/nats/v2 v2.0.0-20250902100831-0402c3a6689f
+	github.com/dobyte/due/locate/redis/v2 v2.0.0-20250902100831-0402c3a6689f
+	github.com/dobyte/due/network/tcp/v2 v2.0.0-20250902100831-0402c3a6689f
+	github.com/dobyte/due/registry/consul/v2 v2.0.0-20250902100831-0402c3a6689f
+	github.com/dobyte/due/v2 v2.3.2
 	github.com/donnie4w/go-logger v0.27.0
 	go.uber.org/zap v1.27.0
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 )
-
-replace github.com/dobyte/due/v2 => ../duplicate/due
 
 require (
 	dario.cat/mergo v1.0.2 // indirect
@@ -57,7 +55,7 @@ require (
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/arch v0.20.0 // indirect
-	golang.org/x/crypto v0.28.0 // indirect
+	golang.org/x/crypto v0.32.0 // indirect
 	golang.org/x/exp v0.0.0-20250106191152-7588d65b2ba8 // indirect
 	golang.org/x/sync v0.16.0 // indirect
 	golang.org/x/sys v0.35.0 // indirect
