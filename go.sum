@@ -38,16 +38,6 @@ github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc h1:U9qPSI2PIWSS1
 github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f h1:lO4WD4F/rVNCu3HqELle0jiPLLBs70cWOduZpkS1E78=
 github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f/go.mod h1:cuUVRXasLTGF7a8hSLbxyZXjz+1KgoB3wDUb6vlszIc=
-github.com/dobyte/due/eventbus/nats/v2 v2.0.0-20250902100831-0402c3a6689f h1:Q6FVhDsOCnAUYzY2K92fX/dokhNA/wY3/LJZAmkX/JY=
-github.com/dobyte/due/eventbus/nats/v2 v2.0.0-20250902100831-0402c3a6689f/go.mod h1:5QzqkGyD63C0XeIXiCSIj1LbMkOdAWFpzITp0daV/Ao=
-github.com/dobyte/due/locate/redis/v2 v2.0.0-20250902100831-0402c3a6689f h1:lBclAMp+UbnCbv/uW6cvf56GDVtfleRnlPWfpHhjHSM=
-github.com/dobyte/due/locate/redis/v2 v2.0.0-20250902100831-0402c3a6689f/go.mod h1:d/PMa/3E2NrhCwwqlZBmIy09BXCWPcrsTHngCKj8uFo=
-github.com/dobyte/due/network/tcp/v2 v2.0.0-20250902100831-0402c3a6689f h1:P5IUL5lRZVvSW8vM/JDeawC0xDgzv0BBHd7YsdIyTB0=
-github.com/dobyte/due/network/tcp/v2 v2.0.0-20250902100831-0402c3a6689f/go.mod h1:0booFWyHc8X1x0NFzjx708ipn/YSEyvrFVnxhd5Y3v8=
-github.com/dobyte/due/registry/consul/v2 v2.0.0-20250902100831-0402c3a6689f h1:RBsAa9ox+CbMaJt7dIqOmO5QINmNE3wrecZHqVEpjcs=
-github.com/dobyte/due/registry/consul/v2 v2.0.0-20250902100831-0402c3a6689f/go.mod h1:Y+viEuZDvJKnVXTsDsoNk/fjlPHWzln5tmosaNEiU/Y=
-github.com/dobyte/due/v2 v2.3.2 h1:Tb7je/U+HvZKCvO8y/zcR8OsDzjZQtPFbt3RuIf9bHY=
-github.com/dobyte/due/v2 v2.3.2/go.mod h1:QmPVDId8EEhgwRLY+KVGRvCYs7ejsxXUrl2I3K8KlSA=
 github.com/donnie4w/go-logger v0.27.0 h1:efsc4w4xWyQAlb+KBsSkYvC8txaRzGR6S4OlDt+BTFc=
 github.com/donnie4w/go-logger v0.27.0/go.mod h1:4V6Hm2QT2ALDypwibyKaWEiY2nuvmavr69zIJDQ0PdM=
 github.com/donnie4w/gofer v0.1.8 h1:b9JNNH16lbKLTJDSe0jhOdDdCqRb5ZjYYmoDcNc0lzo=

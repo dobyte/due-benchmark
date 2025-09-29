@@ -77,7 +77,7 @@ timezone = "Local"
 
 [log]
     # 日志输出级别，可选：debug | info | warn | error | fatal | panic
-    level = "warn"
+    level = "error"
     # 堆栈的最低输出级别，可选：debug | info | warn | error | fatal | panic
     stackLevel = "error"
     # 时间格式，标准库时间格式

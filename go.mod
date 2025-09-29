@@ -8,10 +8,18 @@ require (
 	github.com/dobyte/due/locate/redis/v2 v2.0.0-20250902100831-0402c3a6689f
 	github.com/dobyte/due/network/tcp/v2 v2.0.0-20250902100831-0402c3a6689f
 	github.com/dobyte/due/registry/consul/v2 v2.0.0-20250902100831-0402c3a6689f
-	github.com/dobyte/due/v2 v2.3.2
+	github.com/dobyte/due/v2 v2.3.4
 	github.com/donnie4w/go-logger v0.27.0
 	go.uber.org/zap v1.27.0
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
+)
+
+replace (
+	github.com/dobyte/due/eventbus/nats/v2 => ../duplicate/due/eventbus/nats
+	github.com/dobyte/due/locate/redis/v2 => ../duplicate/due/locate/redis
+	github.com/dobyte/due/network/tcp/v2 => ../duplicate/due/network/tcp
+	github.com/dobyte/due/registry/consul/v2 => ../duplicate/due/registry/consul
+	github.com/dobyte/due/v2 => ../duplicate/due
 )
 
 require (
