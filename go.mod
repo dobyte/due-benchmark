@@ -6,12 +6,24 @@ require (
 	github.com/arthurkiller/rollingwriter v1.1.3
 	github.com/dobyte/due/eventbus/nats/v2 v2.0.0-20250902100831-0402c3a6689f
 	github.com/dobyte/due/locate/redis/v2 v2.0.0-20250902100831-0402c3a6689f
+	github.com/dobyte/due/network/kcp/v2 v2.0.0-20250902100831-0402c3a6689f
 	github.com/dobyte/due/network/tcp/v2 v2.0.0-20250902100831-0402c3a6689f
+	github.com/dobyte/due/network/ws/v2 v2.0.0-20250902100831-0402c3a6689f
 	github.com/dobyte/due/registry/consul/v2 v2.0.0-20250902100831-0402c3a6689f
-	github.com/dobyte/due/v2 v2.3.4
+	github.com/dobyte/due/v2 v2.3.5
 	github.com/donnie4w/go-logger v0.27.0
 	go.uber.org/zap v1.27.0
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
+)
+
+replace (
+	github.com/dobyte/due/eventbus/nats/v2 => ../duplicate/due/eventbus/nats
+	github.com/dobyte/due/locate/redis/v2 => ../duplicate/due/locate/redis
+	github.com/dobyte/due/network/kcp/v2 => ../duplicate/due/network/kcp
+	github.com/dobyte/due/network/tcp/v2 => ../duplicate/due/network/tcp
+	github.com/dobyte/due/network/ws/v2 => ../duplicate/due/network/ws
+	github.com/dobyte/due/registry/consul/v2 => ../duplicate/due/registry/consul
+	github.com/dobyte/due/v2 => ../duplicate/due
 )
 
 require (
@@ -30,6 +42,7 @@ require (
 	github.com/go-redis/redis/v8 v8.11.5 // indirect
 	github.com/google/btree v1.1.3 // indirect
 	github.com/google/uuid v1.6.0 // indirect
+	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/hashicorp/consul/api v1.32.0 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
@@ -42,6 +55,7 @@ require (
 	github.com/jinzhu/copier v0.4.0 // indirect
 	github.com/klauspost/compress v1.17.11 // indirect
 	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
+	github.com/klauspost/reedsolomon v1.12.4 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
@@ -50,13 +64,19 @@ require (
 	github.com/nats-io/nkeys v0.4.7 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/panjf2000/ants/v2 v2.11.3 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/robfig/cron v1.2.0 // indirect
 	github.com/shamaton/msgpack/v2 v2.2.3 // indirect
+	github.com/templexxx/cpu v0.1.1 // indirect
+	github.com/templexxx/xorsimd v0.4.3 // indirect
+	github.com/tjfoc/gmsm v1.4.1 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
+	github.com/xtaci/kcp-go/v5 v5.6.20 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/arch v0.20.0 // indirect
-	golang.org/x/crypto v0.32.0 // indirect
+	golang.org/x/crypto v0.35.0 // indirect
 	golang.org/x/exp v0.0.0-20250106191152-7588d65b2ba8 // indirect
+	golang.org/x/net v0.36.0 // indirect
 	golang.org/x/sync v0.16.0 // indirect
 	golang.org/x/sys v0.35.0 // indirect
 	google.golang.org/protobuf v1.36.6 // indirect

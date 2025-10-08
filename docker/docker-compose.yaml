@@ -1,31 +1,31 @@
 version: "3"
 
 services:
-  mysql:
-    image: mysql:5.7
-    container_name: dev-mysql
-    platform: linux/x86_64
-    command: --default-authentication-plugin=mysql_native_password
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: 123456
-    ports:
-      - '3306:3306'
-    volumes:
-      - ./mysql:/var/lib/mysql
-    networks:
-      - middleware
-  redis:
-    image: redis:6.0
-    container_name: dev-redis
-    platform: linux/x86_64
-    restart: always
-    ports:
-      - '6379:6379'
-    volumes:
-      - ./redis:/data
-    networks:
-      - middleware
+  # mysql:
+  #   image: mysql:5.7
+  #   container_name: dev-mysql
+  #   platform: linux/x86_64
+  #   command: --default-authentication-plugin=mysql_native_password
+  #   restart: always
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: 123456
+  #   ports:
+  #     - '3306:3306'
+  #   volumes:
+  #     - ./mysql:/var/lib/mysql
+  #   networks:
+  #     - middleware
+  # redis:
+  #   image: redis:6.0
+  #   container_name: dev-redis
+  #   platform: linux/x86_64
+  #   restart: always
+  #   ports:
+  #     - '6379:6379'
+  #   volumes:
+  #     - ./redis:/data
+  #   networks:
+  #     - middleware
   etcd:
     image: bitnami/etcd:latest
     container_name: dev-etcd
@@ -72,20 +72,20 @@ services:
       - '4222:4222'
       - '6222:6222'
       - '8222:8222'
-  nacos:
-    image: nacos/nacos-server:latest
-    container_name: dev-nacos
-    environment:
-      - PREFER_HOST_MODE=hostname
-      - MODE=standalone
-      - NACOS_AUTH_IDENTITY_KEY=serverIdentity
-      - NACOS_AUTH_IDENTITY_VALUE=security
-      - NACOS_AUTH_TOKEN=SecretKey012345678901234567890123456789012345678901234567890123456789
-    volumes:
-      - ./nacos:/home/nacos/logs
-    ports:
-      - '8848:8848'
-      - '9848:9848'
+  # nacos:
+  #   image: nacos/nacos-server:v2.5.1
+  #   container_name: dev-nacos
+  #   environment:
+  #     - PREFER_HOST_MODE=hostname
+  #     - MODE=standalone
+  #     - NACOS_AUTH_IDENTITY_KEY=serverIdentity
+  #     - NACOS_AUTH_IDENTITY_VALUE=security
+  #     - NACOS_AUTH_TOKEN=SecretKey012345678901234567890123456789012345678901234567890123456789
+  #   volumes:
+  #     - ./nacos:/home/nacos/logs
+  #   ports:
+  #     - '8848:8848'
+  #     - '9848:9848'
 networks:
   middleware:
     driver: bridge
