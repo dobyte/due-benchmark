@@ -37,7 +37,7 @@ func main() {
 
 // 初始化监听
 func initListen(proxy *node.Proxy) {
-	proxy.Router().AddRouteHandler(greet, false, greetHandler)
+	proxy.Router().AddRouteHandler(greet, greetHandler)
 }
 
 type greetReq struct {
