@@ -73,7 +73,9 @@ timezone = "Local"
     # 序列号字节数，默认为2字节
     seqBytes = 4
     # 消息字节数，默认为5000字节
-    bufferBytes = 100000
+    bufferBytes = 5000
+    # 是否携带服务器心跳时间
+    heartbeatTime = false
 
 [log]
     # 日志输出级别，可选：debug | info | warn | error | fatal | panic

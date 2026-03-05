@@ -49,7 +49,7 @@ func main() {
 	// 添加客户端组件
 	container.Add(component)
 	// 启动容器
-	container.Serve()
+	container.Serve(true)
 }
 
 // 初始化监听

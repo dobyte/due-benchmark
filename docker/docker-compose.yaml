@@ -17,38 +17,67 @@ services:
       cluster-network:
         ipv4_address: 192.168.10.2
   redis:
-    image: openeuler/redis:6.2.7-oe2203lts
+    image: redis:6.2.18
     container_name: dev-redis
     platform: linux/x86_64
     restart: always
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
     ports:
       - '6379:6379'
     networks:
       cluster-network:
         ipv4_address: 192.168.10.3
+  # etcd:
+  #   image: openeuler/etcd:3.6.4-oe2403sp1
+  #   container_name: dev-etcd
+  #   platform: linux/x86_64
+  #   restart: always
+  #   environment:
+  #     - ALLOW_NONE_AUTHENTICATION=yes
+  #     - ETCD_ADVERTISE_CLIENT_URLS=http://etcd-server:2379
+  #   ports:
+  #     - '2379:2379'
+  #     - '2380:2380'
+  #   networks:
+  #     cluster-network:
+  #       ipv4_address: 192.168.10.4
   etcd:
-    image: openeuler/etcd:3.6.4-oe2403sp1
+    image: bitnami/etcd:latest
     container_name: dev-etcd
     platform: linux/x86_64
     restart: always
     environment:
       - ALLOW_NONE_AUTHENTICATION=yes
-      - ETCD_ADVERTISE_CLIENT_URLS=http://etcd-server:2379
+      - ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379
     ports:
       - '2379:2379'
       - '2380:2380'
     networks:
       cluster-network:
         ipv4_address: 192.168.10.4
+  # consul:
+  #   image: openeuler/consul:1.22.0-oe2403sp2
+  #   container_name: dev-consul
+  #   platform: linux/x86_64
+  #   restart: always
+  #   ports:
+  #     - '8500:8500'
+  #   networks:
+  #     cluster-network:
+  #       ipv4_address: 192.168.10.5
   consul:
-    image: openeuler/consul:1.22.0-oe2403sp2
+    image: bitnami/consul:latest
     container_name: dev-consul
     platform: linux/x86_64
     restart: always
     ports:
+      - '8300:8300'
+      - '8301:8301'
+      - '8301:8301/udp'
       - '8500:8500'
+      - '8600:8600'
+      - '8600:8600/udp'
+    volumes:
+      - ./consul:/bitnami
     networks:
       cluster-network:
         ipv4_address: 192.168.10.5
