@@ -6,12 +6,10 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/dobyte/due/eventbus/nats/v2"
 	"github.com/dobyte/due/network/tcp/v2"
 	"github.com/dobyte/due/v2"
 	"github.com/dobyte/due/v2/cluster"
 	"github.com/dobyte/due/v2/cluster/client"
-	"github.com/dobyte/due/v2/eventbus"
 	"github.com/dobyte/due/v2/log"
 	"github.com/dobyte/due/v2/utils/xrand"
 	"github.com/dobyte/due/v2/utils/xtime"
@@ -36,8 +34,6 @@ type greetRes struct {
 }
 
 func main() {
-	// 初始化事件总线
-	eventbus.SetEventbus(nats.NewEventbus())
 	// 创建容器
 	container := due.NewContainer()
 	// 创建客户端组件
