@@ -16,16 +16,6 @@ require (
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 )
 
-replace (
-	github.com/dobyte/due/eventbus/nats/v2 => ../due/eventbus/nats
-	github.com/dobyte/due/locate/redis/v2 => ../due/locate/redis
-	github.com/dobyte/due/network/kcp/v2 => ../due/network/kcp
-	github.com/dobyte/due/network/tcp/v2 => ../due/network/tcp
-	github.com/dobyte/due/network/ws/v2 => ../due/network/ws
-	github.com/dobyte/due/registry/consul/v2 => ../due/registry/consul
-	github.com/dobyte/due/v2 => ../due
-)
-
 require (
 	dario.cat/mergo v1.0.2 // indirect
 	github.com/BurntSushi/toml v1.5.0 // indirect
