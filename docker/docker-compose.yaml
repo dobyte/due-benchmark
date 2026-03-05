@@ -27,82 +27,58 @@ services:
       cluster-network:
         ipv4_address: 192.168.10.3
   # etcd:
-  #   image: openeuler/etcd:3.6.4-oe2403sp1
+  #   image: bitnami/etcd:latest
   #   container_name: dev-etcd
   #   platform: linux/x86_64
   #   restart: always
   #   environment:
   #     - ALLOW_NONE_AUTHENTICATION=yes
-  #     - ETCD_ADVERTISE_CLIENT_URLS=http://etcd-server:2379
+  #     - ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379
   #   ports:
   #     - '2379:2379'
   #     - '2380:2380'
   #   networks:
   #     cluster-network:
   #       ipv4_address: 192.168.10.4
-  etcd:
-    image: bitnami/etcd:latest
-    container_name: dev-etcd
-    platform: linux/x86_64
-    restart: always
-    environment:
-      - ALLOW_NONE_AUTHENTICATION=yes
-      - ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379
-    ports:
-      - '2379:2379'
-      - '2380:2380'
-    networks:
-      cluster-network:
-        ipv4_address: 192.168.10.4
   # consul:
-  #   image: openeuler/consul:1.22.0-oe2403sp2
+  #   image: bitnami/consul:latest
   #   container_name: dev-consul
   #   platform: linux/x86_64
   #   restart: always
   #   ports:
+  #     - '8300:8300'
+  #     - '8301:8301'
+  #     - '8301:8301/udp'
   #     - '8500:8500'
+  #     - '8600:8600'
+  #     - '8600:8600/udp'
+  #   volumes:
+  #     - ./consul:/bitnami
   #   networks:
   #     cluster-network:
   #       ipv4_address: 192.168.10.5
-  consul:
-    image: bitnami/consul:latest
-    container_name: dev-consul
-    platform: linux/x86_64
-    restart: always
-    ports:
-      - '8300:8300'
-      - '8301:8301'
-      - '8301:8301/udp'
-      - '8500:8500'
-      - '8600:8600'
-      - '8600:8600/udp'
-    volumes:
-      - ./consul:/bitnami
-    networks:
-      cluster-network:
-        ipv4_address: 192.168.10.5
-  kafka:
-    image: openeuler/kafka:4.1.0-oe2403sp1
-    container_name: dev-kafka
-    platform: linux/x86_64
-    restart: always
-    ports:
-      - '9092:9092'
-    networks:
-      cluster-network:
-        ipv4_address: 192.168.10.6
-  nats:
-    image: nats:2.12.2
-    container_name: dev-nats
-    platform: linux/x86_64
-    restart: always
-    ports:
-      - '4222:4222'
-      - '6222:6222'
-      - '8222:8222'
-    networks:
-      cluster-network:
-        ipv4_address: 192.168.10.7
+  # kafka:
+  #   image: openeuler/kafka:4.1.0-oe2403sp1
+  #   container_name: dev-kafka
+  #   platform: linux/x86_64
+  #   restart: always
+  #   ports:
+  #     - '9092:9092'
+  #   networks:
+  #     cluster-network:
+  #       ipv4_address: 192.168.10.6
+  # nats:
+  #   image: nats:2.12.2
+  #   container_name: dev-nats
+  #   platform: linux/x86_64
+  #   restart: always
+  #   ports:
+  #     - '4222:4222'
+  #     - '6222:6222'
+  #     - '8222:8222'
+  #   networks:
+  #     cluster-network:
+  #       ipv4_address: 192.168.10.7
   nacos:
     image: nacos/nacos-server:v2.5.1
     container_name: dev-nacos
@@ -123,21 +99,21 @@ services:
     networks:
       cluster-network:
         ipv4_address: 192.168.10.8
-  mongo:
-    image: mongo:4.4-rc-focal
-    container_name: dev-mongo
-    platform: linux/x86_64
-    restart: always
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=12345678
-    ports:
-      - '27017:27017'
-    volumes:
-      - ./mongo/data:/data/db
-    networks:
-      cluster-network:
-        ipv4_address: 192.168.10.9
+  # mongo:
+  #   image: mongo:4.4-rc-focal
+  #   container_name: dev-mongo
+  #   platform: linux/x86_64
+  #   restart: always
+  #   environment:
+  #     - MONGO_INITDB_ROOT_USERNAME=root
+  #     - MONGO_INITDB_ROOT_PASSWORD=12345678
+  #   ports:
+  #     - '27017:27017'
+  #   volumes:
+  #     - ./mongo/data:/data/db
+  #   networks:
+  #     cluster-network:
+  #       ipv4_address: 192.168.10.9
   memcached:
     image: openeuler/memcached:latest
     container_name: dev-memcached

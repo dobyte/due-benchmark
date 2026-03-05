@@ -13,3 +13,6 @@ docker/*/
 
 # Process ID
 *.pid
+
+# project run dir
+*run/
