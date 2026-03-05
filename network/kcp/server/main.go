@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/dobyte/due/network/kcp/v2"
-	"github.com/dobyte/due/v2/core/buffer"
 	"github.com/dobyte/due/v2/log"
 	"github.com/dobyte/due/v2/network"
 	"github.com/dobyte/due/v2/packet"
@@ -17,10 +16,8 @@ func main() {
 		log.Info("server is started")
 	})
 
-	server.OnReceive(func(conn network.Conn, buf buffer.Buffer) {
-		defer buf.Release()
-
-		message, err := packet.UnpackMessage(buf.Bytes())
+	server.OnReceive(func(conn network.Conn, msg []byte) {
+		message, err := packet.UnpackMessage(msg)
 		if err != nil {
 			log.Errorf("unpack message failed: %v", err)
 			return

@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/dobyte/due/network/ws/v2"
-	"github.com/dobyte/due/v2/core/buffer"
 	"github.com/dobyte/due/v2/log"
 	"github.com/dobyte/due/v2/network"
 	"github.com/dobyte/due/v2/packet"
@@ -72,9 +71,7 @@ func doPressureTest(c int, n int, size int) {
 
 	client := ws.NewClient(ws.WithClientHeartbeatInterval(0))
 
-	client.OnReceive(func(conn network.Conn, buf buffer.Buffer) {
-		defer buf.Release()
-
+	client.OnReceive(func(conn network.Conn, msg []byte) {
 		atomic.AddInt64(&totalRecv, 1)
 
 		wg.Done()

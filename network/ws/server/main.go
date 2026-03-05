@@ -5,7 +5,6 @@ import (
 	_ "net/http/pprof"
 
 	"github.com/dobyte/due/network/ws/v2"
-	"github.com/dobyte/due/v2/core/buffer"
 	"github.com/dobyte/due/v2/log"
 	"github.com/dobyte/due/v2/network"
 	"github.com/dobyte/due/v2/packet"
@@ -18,10 +17,8 @@ func main() {
 		log.Info("server is started")
 	})
 
-	server.OnReceive(func(conn network.Conn, buf buffer.Buffer) {
-		defer buf.Release()
-
-		if _, err := packet.UnpackMessage(buf.Bytes()); err != nil {
+	server.OnReceive(func(conn network.Conn, msg []byte) {
+		if _, err := packet.UnpackMessage(msg); err != nil {
 			log.Errorf("unpack message failed: %v", err)
 			return
 		}

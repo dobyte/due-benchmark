@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/dobyte/due/network/kcp/v2"
-	"github.com/dobyte/due/v2/core/buffer"
 	"github.com/dobyte/due/v2/log"
 	"github.com/dobyte/due/v2/network"
 	"github.com/dobyte/due/v2/packet"
@@ -77,9 +76,7 @@ func doPressureTest(c int, n int, size int) {
 
 	client := kcp.NewClient(kcp.WithClientHeartbeatInterval(0))
 
-	client.OnReceive(func(conn network.Conn, buf buffer.Buffer) {
-		defer buf.Release()
-
+	client.OnReceive(func(conn network.Conn, data []byte) {
 		atomic.AddInt64(&totalRecv, 1)
 
 		wg.Done()
