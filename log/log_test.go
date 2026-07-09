@@ -14,6 +14,8 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
+// go test -bench=^Benchmark -benchmem
+
 const (
 	outDir    = "./temp"
 	debugText = ">>>>>>this is debug message>>>>>>this is debug message"

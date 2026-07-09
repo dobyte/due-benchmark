@@ -4,16 +4,27 @@ go 1.25.0
 
 require (
 	github.com/arthurkiller/rollingwriter v1.1.3
-	github.com/dobyte/due/eventbus/nats/v2 v2.0.0-20260303065453-715e58700496
-	github.com/dobyte/due/locate/redis/v2 v2.0.0-20260303065453-715e58700496
-	github.com/dobyte/due/network/kcp/v2 v2.0.0-20260303065453-715e58700496
-	github.com/dobyte/due/network/tcp/v2 v2.0.0-20260303065453-715e58700496
-	github.com/dobyte/due/network/ws/v2 v2.0.0-20260303065453-715e58700496
-	github.com/dobyte/due/registry/nacos/v2 v2.0.0-20260303065453-715e58700496
-	github.com/dobyte/due/v2 v2.5.2
+	github.com/dobyte/due/locate/redis/v2 v2.0.0-20260602055605-806892f51b0b
+	github.com/dobyte/due/network/kcp/v2 v2.0.0-20260602055605-806892f51b0b
+	github.com/dobyte/due/network/quic/v2 v2.0.0-20260602055605-806892f51b0b
+	github.com/dobyte/due/network/tcp/v2 v2.0.0-20260602055605-806892f51b0b
+	github.com/dobyte/due/network/ws/v2 v2.0.0-20260602055605-806892f51b0b
+	github.com/dobyte/due/registry/nacos/v2 v2.0.0-20260602055605-806892f51b0b
+	github.com/dobyte/due/v2 v2.6.0
 	github.com/donnie4w/go-logger v0.27.0
+	github.com/gorilla/websocket v1.5.3
 	go.uber.org/zap v1.27.0
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
+)
+
+replace (
+	github.com/dobyte/due/locate/redis/v2 => ../due/locate/redis
+	github.com/dobyte/due/network/kcp/v2 => ../due/network/kcp
+	github.com/dobyte/due/network/quic/v2 => ../due/network/quic
+	github.com/dobyte/due/network/tcp/v2 => ../due/network/tcp
+	github.com/dobyte/due/network/ws/v2 => ../due/network/ws
+	github.com/dobyte/due/registry/nacos/v2 => ../due/registry/nacos
+	github.com/dobyte/due/v2 => ../due
 )
 
 require (
@@ -53,32 +64,30 @@ require (
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/donnie4w/gofer v0.1.8 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
+	github.com/go-task/slim-sprig v0.0.0-20230315185526-52ccab3ef572 // indirect
 	github.com/golang/mock v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/btree v1.1.3 // indirect
+	github.com/google/pprof v0.0.0-20210407192527-94a9f03dee38 // indirect
 	github.com/google/uuid v1.6.0 // indirect
-	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/jinzhu/copier v0.4.0 // indirect
 	github.com/jmespath/go-jmespath v0.0.0-20180206201540-c2b33e8439af // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/klauspost/compress v1.17.11 // indirect
 	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
 	github.com/klauspost/reedsolomon v1.12.4 // indirect
-	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/nacos-group/nacos-sdk-go/v2 v2.3.5 // indirect
-	github.com/nats-io/nats.go v1.37.0 // indirect
-	github.com/nats-io/nkeys v0.4.7 // indirect
-	github.com/nats-io/nuid v1.0.1 // indirect
+	github.com/onsi/ginkgo/v2 v2.9.5 // indirect
 	github.com/orcaman/concurrent-map v0.0.0-20210501183033-44dafcb38ecc // indirect
 	github.com/panjf2000/ants/v2 v2.11.4 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
-	github.com/prometheus/client_golang v1.12.2 // indirect
-	github.com/prometheus/client_model v0.2.0 // indirect
-	github.com/prometheus/common v0.32.1 // indirect
-	github.com/prometheus/procfs v0.7.3 // indirect
+	github.com/prometheus/client_golang v1.19.1 // indirect
+	github.com/prometheus/client_model v0.5.0 // indirect
+	github.com/prometheus/common v0.48.0 // indirect
+	github.com/prometheus/procfs v0.12.0 // indirect
+	github.com/quic-go/quic-go v0.50.0 // indirect
 	github.com/redis/go-redis/v9 v9.17.2 // indirect
 	github.com/robfig/cron v1.2.0 // indirect
 	github.com/shamaton/msgpack/v2 v2.4.0 // indirect
@@ -87,14 +96,18 @@ require (
 	github.com/tjfoc/gmsm v1.4.1 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/xtaci/kcp-go/v5 v5.6.20 // indirect
+	go.uber.org/mock v0.5.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/arch v0.20.0 // indirect
 	golang.org/x/crypto v0.35.0 // indirect
+	golang.org/x/exp v0.0.0-20240909161429-701f63a606c0 // indirect
+	golang.org/x/mod v0.21.0 // indirect
 	golang.org/x/net v0.36.0 // indirect
-	golang.org/x/sync v0.19.0 // indirect
+	golang.org/x/sync v0.20.0 // indirect
 	golang.org/x/sys v0.35.0 // indirect
 	golang.org/x/text v0.22.0 // indirect
-	golang.org/x/time v0.1.0 // indirect
+	golang.org/x/time v0.5.0 // indirect
+	golang.org/x/tools v0.25.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260226221140-a57be14db171 // indirect
 	google.golang.org/grpc v1.67.3 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
