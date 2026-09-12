@@ -16,16 +16,16 @@ services:
   #   networks:
   #     cluster-network:
   #       ipv4_address: 192.168.10.2
-  redis:
-    image: redis:6.2.18
-    container_name: dev-redis
-    platform: linux/x86_64
-    restart: always
-    ports:
-      - '6379:6379'
-    networks:
-      cluster-network:
-        ipv4_address: 192.168.10.3
+  # redis:
+  #   image: redis:6.2.18
+  #   container_name: dev-redis
+  #   platform: linux/x86_64
+  #   restart: always
+  #   ports:
+  #     - '6379:6379'
+  #   networks:
+  #     cluster-network:
+  #       ipv4_address: 192.168.10.3
   # etcd:
   #   image: bitnami/etcd:latest
   #   container_name: dev-etcd
@@ -67,18 +67,18 @@ services:
   #   networks:
   #     cluster-network:
   #       ipv4_address: 192.168.10.6
-  # nats:
-  #   image: nats:2.12.2
-  #   container_name: dev-nats
-  #   platform: linux/x86_64
-  #   restart: always
-  #   ports:
-  #     - '4222:4222'
-  #     - '6222:6222'
-  #     - '8222:8222'
-  #   networks:
-  #     cluster-network:
-  #       ipv4_address: 192.168.10.7
+  nats:
+    image: nats:2.12.2
+    container_name: dev-nats
+    platform: linux/x86_64
+    restart: always
+    ports:
+      - '4222:4222'
+      - '6222:6222'
+      - '8222:8222'
+    networks:
+      cluster-network:
+        ipv4_address: 192.168.10.7
   nacos:
     image: nacos/nacos-server:v2.5.1
     container_name: dev-nacos
