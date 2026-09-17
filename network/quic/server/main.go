@@ -5,6 +5,7 @@ import (
 	_ "net/http/pprof"
 
 	"github.com/dobyte/due/network/quic/v2"
+	"github.com/dobyte/due/v2/core/buffer"
 	"github.com/dobyte/due/v2/log"
 	"github.com/dobyte/due/v2/network"
 	"github.com/dobyte/due/v2/packet"
@@ -20,14 +21,16 @@ func main() {
 		log.Info("server is started")
 	})
 
-	server.OnReceive(func(conn network.Conn, msg []byte) {
-		message, err := packet.UnpackMessage(msg)
+	server.OnReceive(func(conn network.Conn, buf buffer.Buffer) {
+		defer buf.Release()
+
+		message, err := packet.UnpackMessage(buf)
 		if err != nil {
 			log.Errorf("unpack message failed: %v", err)
 			return
 		}
 
-		data, err := packet.PackMessage(&packet.Message{
+		msg, err := packet.PackMessage(&packet.Message{
 			Seq:    message.Seq,
 			Route:  message.Route,
 			Buffer: message.Buffer,
@@ -37,7 +40,8 @@ func main() {
 			return
 		}
 
-		if err = conn.Push(data); err != nil {
+		if err = conn.Push(msg); err != nil {
+			msg.Release()
 			log.Errorf("push message failed: %v", err)
 			return
 		}

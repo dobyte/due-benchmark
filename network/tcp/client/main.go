@@ -90,7 +90,7 @@ func doPressureTest(c int, n int, size int) {
 	client.OnReceive(func(conn network.Conn, buf buffer.Buffer) {
 		defer buf.Release()
 
-		message, err := packet.UnpackMessage(buf.Bytes())
+		message, err := packet.UnpackMessage(buf)
 		if err != nil {
 			return
 		}
@@ -133,7 +133,7 @@ func doPressureTest(c int, n int, size int) {
 				seq := atomic.AddInt32(&totalSent, 1)
 				sendTimes[seq] = time.Now().UnixNano()
 
-				msg, err := packet.PackMessage(&packet.Message{
+				buf, err := packet.PackMessage(&packet.Message{
 					Seq:    seq,
 					Route:  1,
 					Buffer: buffer,
@@ -145,7 +145,8 @@ func doPressureTest(c int, n int, size int) {
 					return
 				}
 
-				if err = conn.Push(msg); err != nil {
+				if err = conn.Push(buf); err != nil {
+					buf.Release()
 					log.Errorf("push message failed: %v", err)
 					atomic.AddInt64(&pushErrors, 1)
 					wg.Done()

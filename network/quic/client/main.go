@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/dobyte/due/network/quic/v2"
+	"github.com/dobyte/due/v2/core/buffer"
 	"github.com/dobyte/due/v2/log"
 	"github.com/dobyte/due/v2/network"
 	"github.com/dobyte/due/v2/packet"
@@ -83,11 +84,13 @@ func doPressureTest(c int, n int, size int) {
 		latencies     = make([]float64, n) // 预分配，收集延迟值 (ms)
 		connDurations []float64            // 每个连接的建立耗时 (ms)
 
-		client = quic.NewClient(quic.WithClientHeartbeatInterval(0))
+		client = quic.NewClient(quic.WithClientHeartbeatInterval(0), quic.WithClientCredentials("../certs/cert.pem", "localhost"))
 	)
 
-	client.OnReceive(func(conn network.Conn, msg []byte) {
-		message, err := packet.UnpackMessage(msg)
+	client.OnReceive(func(conn network.Conn, buf buffer.Buffer) {
+		defer buf.Release()
+
+		message, err := packet.UnpackMessage(buf)
 		if err != nil {
 			return
 		}
