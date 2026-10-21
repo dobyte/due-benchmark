@@ -1,0 +1,14 @@
+  PID %CPU %MEM COMMAND
+27430  2.4  0.1 /root/.cache/go-build/43/43335fe4c2a0379573dc257f34c5f1ee58ebe3416f29c1a6be5b425ac8c24860-d/main
+27478  1.9  0.0 /root/.cache/go-build/55/5510adcaa6a10bf22112261da6c802d9bc51eff6fc6c85aed102e81a9804c0eb-d/main
+ 2015  0.8  5.0 /opt/java/openjdk/bin/java -Xms1g -Xmx1g -Xmn512m -Dnacos.standalone=true -Dnacos.member.list= -Xlog:gc*:file=/home/nacos/logs/nacos_gc.log:time,tags:filecount=10,filesize=102400 --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED -Dloader.path=/home/nacos/plugins,/home/nacos/plugins/health,/home/nacos/plugins/cmdb,/home/nacos/plugins/selector -Dnacos.home=/home/nacos -jar /home/nacos/target/nacos-server.jar --spring.config.additional-location=file:/home/nacos/conf/ --spring.config.name=application --logging.config=/home/nacos/conf/nacos-logback.xml --server.max-http-request-header-size=524288
+ 1098  0.1  0.1 /usr/bin/containerd
+ 2016  0.1  0.0 redis-server *:6379
+    1  0.0  0.0 /usr/lib/systemd/systemd --switched-root --system --deserialize 22
+    2  0.0  0.0 [kthreadd]
+    4  0.0  0.0 [kworker/0:0H]
+    6  0.0  0.0 [ksoftirqd/0]
+    7  0.0  0.0 [migration/0]
+    8  0.0  0.0 [rcu_bh]
+    9  0.0  0.0 [rcu_sched]
+   10  0.0  0.0 [lru-add-drain]

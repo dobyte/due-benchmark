@@ -1,0 +1,6 @@
+# Keep Linux shell scripts executable after a Windows checkout.
+*.sh text eol=lf
+
+# Preserve measured artifacts byte-for-byte so recorded SHA256 values stay valid.
+# Generated SVG paths and captured tool output may contain intentional whitespace.
+comparison/reports/** -text -whitespace

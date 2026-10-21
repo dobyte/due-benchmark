@@ -16,3 +16,6 @@ docker/*/
 
 # project run dir
 *run/
+
+# Downloaded framework sources and build outputs
+.cache/

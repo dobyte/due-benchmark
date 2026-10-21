@@ -1,0 +1,65 @@
+comparison/bin/due-bench: go1.27.1
+	path	due-benchmark/comparison/due
+	mod	due-benchmark/comparison/due	(devel)	
+	dep	dario.cat/mergo	v1.0.2	h1:85+piFYR1tMbRrLcDwR18y4UKJ3aH1Tbzi24VRW1TK8=
+	dep	github.com/BurntSushi/toml	v1.6.0	h1:dRaEfpa2VI55EwlIW72hMRHdWouJeRF7TPYhI+AUQjk=
+	dep	github.com/bytedance/gopkg	v0.1.3	h1:TPBSwH8RsouGCBcMBktLt1AymVo2TVsBVCY4b6TnZ/M=
+	dep	github.com/bytedance/sonic	v1.15.4	h1:FgtV/4aBHpla9AxuMpuuzVUpa/Cf3izufkxNmnEzdI8=
+	dep	github.com/bytedance/sonic/loader	v0.5.2	h1:0QtP1gevc1OZ6/H8Lb9BRZiCXd1Ftjd3OKuj1T1lBIo=
+	dep	github.com/cespare/xxhash/v2	v2.3.0	h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UFvs=
+	dep	github.com/clipperhouse/uax29/v2	v2.2.0	h1:ChwIKnQN3kcZteTXMgb1wztSgaU+ZemkgWdohwgs8tY=
+	dep	github.com/cloudwego/base64x	v0.1.6	h1:t11wG9AECkCDk5fMSoxmufanudBtJ+/HemLstXDLI2M=
+	dep	github.com/coreos/go-semver	v0.3.1	h1:yi21YpKnrx1gt5R+la8n5WgS0kCrsPp33dmEyHReZr4=
+	dep	github.com/coreos/go-systemd/v22	v22.7.0	h1:LAEzFkke61DFROc7zNLX/WA2i5J8gYqe0rSj9KI28KA=
+	dep	github.com/dobyte/due/locate/redis/v2	v2.0.0
+	=>	../../../due/locate/redis	(devel)	
+	
+	dep	github.com/dobyte/due/network/tcp/v2	v2.0.0
+	=>	../../../due/network/tcp	(devel)	
+	
+	dep	github.com/dobyte/due/registry/etcd/v2	v2.0.0
+	=>	../../../due/registry/etcd	(devel)	
+	
+	dep	github.com/dobyte/due/v2	v2.6.3
+	=>	../../../due	(devel)	
+	
+	dep	github.com/fsnotify/fsnotify	v1.10.1	h1:b0/UzAf9yR5rhf3RPm9gf3ehBPpf0oZKIjtpKrx59Ho=
+	dep	github.com/golang/protobuf	v1.5.4	h1:i7eJL8qZTpSEXOPTxNKhASYpMn+8e5Q6AdndVa1dWek=
+	dep	github.com/grpc-ecosystem/grpc-gateway/v2	v2.29.0	h1:5VipnvEpbqr2gA2VbM+nYVbkIF28c5ZQfqCBQ5g2xfk=
+	dep	github.com/jinzhu/copier	v0.4.0	h1:w3ciUoD19shMCRargcpm0cm91ytaBhDvuRpz1ODO/U8=
+	dep	github.com/klauspost/cpuid/v2	v2.2.10	h1:tBs3QSyvjDyFTq3uoc/9xFpCuOsJQFNPiAhYdw2skhE=
+	dep	github.com/mattn/go-runewidth	v0.0.30	h1:+KUuiDA4fF0R1p5FeueHefjDm+GIM+kWfFnDjybOPgk=
+	dep	github.com/panjf2000/ants/v2	v2.12.1	h1:BWvU2wHpyXWxhhNXsGB6JXLCNbshyLd1QxvoAmZnu10=
+	dep	github.com/petermattis/goid	v0.0.0-20260820044319-269ab09b5261	h1:lcWAnrqr2nNfDiArwFNHCE4787Mw2tCdVSOXCru0/0E=
+	dep	github.com/pires/go-proxyproto	v0.15.0	h1:dTshmNbFm/D+0+sbrxUuddPOZ5Y0B7c5NhtsBkm6LqI=
+	dep	github.com/redis/go-redis/v9	v9.22.0	h1:laDvpYXTJtZLloinw1fA5Kqd6HAEH2XKxOkG/PDq2F0=
+	dep	github.com/shamaton/msgpack/v2	v2.4.1	h1:JtJ141QoQ3NqgPDsjq2v9VXlaON8SiQOwEaoNLEK/MQ=
+	dep	github.com/twitchyliquid64/golang-asm	v0.15.1	h1:SU5vSMR7hnwNxj24w34ZyCi/FmDZTkS4MhqMhdFk5YI=
+	dep	go.etcd.io/etcd/api/v3	v3.7.1	h1:KJG0/DcWGfe3Y1otDf/fsBf0TSSgpxZ5RO/L8SFt73E=
+	dep	go.etcd.io/etcd/client/pkg/v3	v3.7.1	h1:rKYsj3pRkR0eK3yjT3XOgrhqfmIfj9pzNgxjh7mfFv4=
+	dep	go.etcd.io/etcd/client/v3	v3.7.1	h1:0PEMMC0KuZmVIN+RAbdqfkZ45pYTgKVtmBEbRCvZFUg=
+	dep	go.uber.org/atomic	v1.11.0	h1:ZvwS0R+56ePWxUNi+Atn9dWONBPp/AUETXlHW0DxSjE=
+	dep	go.uber.org/multierr	v1.11.0	h1:blXXJkSxSSfBVBlC76pxqeO+LN3aDfLQo+309xJstO0=
+	dep	go.uber.org/zap	v1.27.1	h1:08RqriUEv8+ArZRYSTXy1LeBScaMpVSTBhCeaZYfMYc=
+	dep	golang.org/x/arch	v0.11.0	h1:KXV8WWKCXm6tRpLirl2szsO5j/oOODwZf4hATmGVNs4=
+	dep	golang.org/x/crypto	v0.51.0	h1:IBPXwPfKxY7cWQZ38ZCIRPI50YLeevDLlLnyC5wRGTI=
+	dep	golang.org/x/exp	v0.0.0-20261014143641-f0251eb4aa3e	h1:HgI6W1OolKK6tcV74is+rl9SMT0njsHlp0TbQiGXI/A=
+	dep	golang.org/x/net	v0.55.0	h1:bcvxaJn3e1U6InsFWt1JUq1aSjnRxLzT2rtD2KfkDF8=
+	dep	golang.org/x/sync	v0.24.0	h1:iqiDrGoDgyuvAKrhLQthUEzU/R378N78gXbBjxed7oA=
+	dep	golang.org/x/sys	v0.45.0	h1:dO4czNzziLiiXplLQgBCEpCvXQ3dnkn0SdaZSYdQ+FY=
+	dep	golang.org/x/text	v0.37.0	h1:Cqjiwd9eSg8e0QAkyCaQTNHFIIzWtidPahFWR83rTrc=
+	dep	google.golang.org/genproto/googleapis/api	v0.0.0-20260414002931-afd174a4e478	h1:yQugLulqltosq0B/f8l4w9VryjV+N/5gcW0jQ3N8Qec=
+	dep	google.golang.org/genproto/googleapis/rpc	v0.0.0-20260414002931-afd174a4e478	h1:RmoJA1ujG+/lRGNfUnOMfhCy5EipVMyvUE+KNbPbTlw=
+	dep	google.golang.org/grpc	v1.82.1	h1:NnAxzGRA0677vCa4BUkOAnO5+FfQqVl9iUXeD0IqcGE=
+	dep	google.golang.org/protobuf	v1.36.12	h1:pJOKDDOyeXErUroCihFAd5LQuwXBSpVnKGrj5o/fwxc=
+	dep	gopkg.in/yaml.v3	v3.0.1	h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
+	build	-buildmode=exe
+	build	-compiler=gc
+	build	CGO_ENABLED=0
+	build	GOARCH=amd64
+	build	GOOS=linux
+	build	GOAMD64=v1
+	build	vcs=git
+	build	vcs.revision=ac356213b672f6b0cab7a40460f6f5e4d90d3fba
+	build	vcs.time=2026-09-17T13:47:30Z
+	build	vcs.modified=true

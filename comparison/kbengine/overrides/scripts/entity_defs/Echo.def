@@ -1,0 +1,9 @@
+<root>
+  <Properties/>
+  <BaseMethods>
+    <onEcho><Arg>UINT64</Arg><Arg>BLOB</Arg></onEcho>
+  </BaseMethods>
+  <CellMethods>
+    <echo><Arg>UINT64</Arg><Arg>BLOB</Arg></echo>
+  </CellMethods>
+</root>

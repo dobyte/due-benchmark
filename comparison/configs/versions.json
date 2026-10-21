@@ -1,0 +1,6 @@
+{
+ "skynet":{"repository":"https://github.com/cloudwu/skynet","commit":"64391f732e76507ea6615f312cb71be1fd7bfbdd"},
+ "pitaya":{"repository":"https://github.com/topfreegames/pitaya","commit":"f3d0af570f76e2608aee35900dcea20015b36978"},
+ "kbengine":{"repository":"https://github.com/kbengine/kbengine","commit":"7d379b9f943d2731b09c45398855f98efe74d046"},
+ "due":{"source":"local workspace snapshot; see due-manifest.json","commit":"8f44429a84ceb5626374d967db21ef059e48ac8e"}
+}

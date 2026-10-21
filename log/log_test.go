@@ -1,11 +1,11 @@
 package log_test
 
 import (
+	"due-benchmark/log"
 	"os"
 	"testing"
 
 	"github.com/arthurkiller/rollingwriter"
-	"github.com/dobyte/due-benchmark/log"
 	duelog "github.com/dobyte/due/v2/log"
 	duelogfile "github.com/dobyte/due/v2/log/file"
 	gologger "github.com/donnie4w/go-logger/logger"
@@ -51,7 +51,7 @@ func init() {
 			Filename:   "./temp/s_zap.log",
 			MaxSize:    500, // MB
 			MaxBackups: 3,
-			MaxAge:     28, // 天
+			MaxAge:     28, // Days
 			Compress:   true,
 		}),
 		zap.DebugLevel,
@@ -63,7 +63,7 @@ func init() {
 			Filename:   "./temp/p_zap.log",
 			MaxSize:    500, // MB
 			MaxBackups: 3,
-			MaxAge:     28, // 天
+			MaxAge:     28, // Days
 			Compress:   true,
 		}),
 		zap.DebugLevel,
@@ -75,7 +75,7 @@ func init() {
 			Filename:   "./temp/s_zap_suger.log",
 			MaxSize:    500, // MB
 			MaxBackups: 3,
-			MaxAge:     28, // 天
+			MaxAge:     28, // Days
 			Compress:   true,
 		}),
 		zap.DebugLevel,
@@ -87,7 +87,7 @@ func init() {
 			Filename:   "./temp/p_zap_suger.log",
 			MaxSize:    500, // MB
 			MaxBackups: 3,
-			MaxAge:     28, // 天
+			MaxAge:     28, // Days
 			Compress:   true,
 		}),
 		zap.DebugLevel,
@@ -140,7 +140,7 @@ func Benchmark_Std_SerialIO(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
 
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		_, _ = stdSerialLogger.Write([]byte(debugText + "\n"))
 	}
 }
@@ -158,7 +158,7 @@ func Benchmark_Std_ParallelIO(b *testing.B) {
 func Benchmark_Zap_SerialIO(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		zapSerialLogger.Debug(debugText)
 	}
 	zapSerialLogger.Sync()
@@ -178,7 +178,7 @@ func Benchmark_Zap_ParallelIO(b *testing.B) {
 func Benchmark_Zap_Suger_SerialIO(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		zapSerialSugaredLogger.Debug(debugText)
 	}
 	zapSerialSugaredLogger.Sync()
@@ -198,7 +198,7 @@ func Benchmark_Zap_Suger_ParallelIO(b *testing.B) {
 func Benchmark_Due_SerialIO(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		dueSerialLogger.Debug(debugText)
 	}
 }
@@ -216,7 +216,7 @@ func Benchmark_Due_ParallelIO(b *testing.B) {
 func Benchmark_RollingWriter_SerialIO(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		_, _ = rollingWriterSerialLogger.Write([]byte(debugText))
 	}
 }
@@ -234,7 +234,7 @@ func Benchmark_RollingWriter_ParallelIO(b *testing.B) {
 func Benchmark_GoLogger_SerialIO(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		goLoggerSerialLogger.Debug(debugText)
 	}
 }

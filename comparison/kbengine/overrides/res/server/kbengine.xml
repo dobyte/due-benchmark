@@ -1,0 +1,11 @@
+<root>
+  <publish><state>1</state><script_version>benchmark</script_version></publish>
+  <trace_packet><debug_type>0</debug_type></trace_packet>
+  <dbmgr>
+    <databaseInterfaces><default>
+      <host>127.0.0.1</host><port>17406</port>
+      <auth><username>root</username><password>benchmark-local-only</password><encrypt>false</encrypt></auth>
+      <databaseName>framework_benchmark</databaseName>
+    </default></databaseInterfaces>
+  </dbmgr>
+</root>

@@ -1,0 +1,7 @@
+9f0e5f42181d9b036f1cd0b107a256e824d6ce8a7f9e0967d712ce2406eadc54  /opt/framework-benchmark/comparison/bin/benchmark-etcd
+7cf43859273e38459ce29cfedb5529ecc1133c7c416712ef4e278497e4d09fe5  /opt/framework-benchmark/comparison/bin/due-bench
+8c8515b0d239821dda7f166f12a2bca197efe7ff35eefc3b5fe9fafbbf83f85b  /opt/framework-benchmark/comparison/bin/loadgen
+569b24e9e985b854700a441f2d58d03acda8c698878b73ca92a518c43c42744e  /opt/framework-benchmark/comparison/bin/pitaya-bench
+ed52c00fa464fca4d6390c25a72e6c2ffaf52cc5af80abb5953277056435e0dc  /opt/framework-benchmark/src/skynet/skynet
+65b7cf995a995697b8eec9a86531901831efe8b3daa2d7a79ea86fd0ef980f2c  /opt/framework-benchmark/src/kbengine/kbe/bin/server/baseapp
+36d88cd04f9316cb3018c8ee119a78f6b19d3d9bba4af2a8fbf7a0fb6eb24c5d  /opt/framework-benchmark/src/kbengine/kbe/bin/server/cellapp

@@ -1,0 +1,23 @@
+{
+  "cpu_affinity": {
+    "gateway": "0,6",
+    "worker": "1,7",
+    "loadgen": "2,3,8,9",
+    "infra": "4,10"
+  },
+  "requests": 100000,
+  "repeats": 3,
+  "smoke": false,
+  "seed": 20261021,
+  "cpu_percent_basis": "100% = one logical CPU",
+  "cpu_window": "loadgen stderr begin/end markers; /proc clock ticks",
+  "rss": "sum gateway+worker RSS, sampled every 20ms; shared pages counted per process",
+  "infrastructure": "dedicated etcd, Redis and KBEngine MySQL; server metrics exclude infrastructure",
+  "host_services_not_stopped": true,
+  "frameworks": [
+    "skynet",
+    "pitaya",
+    "kbengine",
+    "due"
+  ]
+}

@@ -1,33 +1,41 @@
 package main
 
 import (
+	"github.com/dobyte/due/crypto/ecc/v2"
 	"github.com/dobyte/due/locate/redis/v2"
 	"github.com/dobyte/due/network/tcp/v2"
 	"github.com/dobyte/due/registry/nacos/v2"
 	"github.com/dobyte/due/v2"
 	"github.com/dobyte/due/v2/cluster/gate"
 	"github.com/dobyte/due/v2/component/pprof"
+	"github.com/dobyte/due/v2/flag"
 )
 
 func main() {
-	// 创建容器
-	container := due.NewContainer()
-	// 创建服务器
+	// Enable security
+	security := flag.Bool("security", false)
+	// Create the gate options
+	opts := make([]gate.Option, 0, 4)
+	// Create the server
 	server := tcp.NewServer()
-	// 创建用户定位器
-	locator := redis.NewLocator()
-	// 创建服务发现
-	registry := nacos.NewRegistry()
-	// 创建网关组件
-	component1 := gate.NewGate(
-		gate.WithServer(server),
-		gate.WithLocator(locator),
-		gate.WithRegistry(registry),
-	)
-	// 创建PProf组件
+	// Create the gate server
+	opts = append(opts, gate.WithServer(server))
+	// Create the user locator
+	opts = append(opts, gate.WithLocator(redis.NewLocator()))
+	// Create the service registry
+	opts = append(opts, gate.WithRegistry(nacos.NewRegistry()))
+	// Create the session security
+	if security {
+		opts = append(opts, gate.WithSessionSecurity(ecc.NewSigner()))
+	}
+	// Create the gate component
+	component1 := gate.NewGate(opts...)
+	// Create the pprof component
 	component2 := pprof.NewPProf()
-	// 添加网关组件
+	// Create the container
+	container := due.NewContainer()
+	// Add the gate component
 	container.Add(component1, component2)
-	// 启动容器
+	// Start the container
 	container.Serve()
 }

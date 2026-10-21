@@ -1,0 +1,11 @@
+{
+  "payload_bytes": [64, 1024, 4096],
+  "concurrency": [32, 128, 512],
+  "requests_per_point": 100000,
+  "repeats": 3,
+  "warmup_requests": 10000,
+  "timeout_ms": 3000,
+  "host": "192.168.2.250",
+  "gateway_addr": "127.0.0.1:17001",
+  "worker_addr": "127.0.0.1:17002"
+}

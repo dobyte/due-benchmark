@@ -21,17 +21,13 @@ func main() {
 	server.OnReceive(func(conn network.Conn, buf buffer.Buffer) {
 		defer buf.Release()
 
-		message, err := packet.UnpackMessage(buf)
+		route, seq, message, err := packet.UnpackMessage(buf)
 		if err != nil {
 			log.Errorf("unpack message failed: %v", err)
 			return
 		}
 
-		msg, err := packet.PackMessage(&packet.Message{
-			Seq:    message.Seq,
-			Route:  message.Route,
-			Buffer: message.Buffer,
-		})
+		msg, err := packet.PackMessage(route, seq, message.Bytes())
 		if err != nil {
 			log.Errorf("pack message failed: %v", err)
 			return

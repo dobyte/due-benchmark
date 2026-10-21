@@ -1,0 +1,4 @@
+<root>
+  <Account hasClient="true"/>
+  <Echo hasBase="true" hasCell="true" hasClient="false"/>
+</root>
