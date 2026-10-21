@@ -4,8 +4,6 @@
 
 面向 [Skynet](https://github.com/cloudwu/skynet)、[Pitaya](https://github.com/topfreegames/pitaya)、[KBEngine](https://github.com/kbengine/kbengine) 和 [Due](https://github.com/dobyte/due) 的分布式架构 TCP 性能测评，以及 Due 网络、集群和日志模块的测试示例。
 
-本文参考 [netpoll-benchmark](https://github.com/cloudwego/netpoll-benchmark) 的组织方式，提供测试场景、执行方法、环境配置与图表。本项目测量的是游戏服务器框架的跨进程调用链路，测试负载与 netpoll-benchmark 的 RPC 场景不同，两者数据不能直接比较。
-
 **本次报告：[2026-10-21 四框架测试报告](comparison/reports/2026-10-21/REPORT.md)。** 已完成 108 个测试点、10,800,000 次正式请求，失败或跳过请求为 0。
 
 > 本次结果来自一台机器上的跨进程 loopback 测试。KBEngine 采用官方 socket 扩展接入 TCP，再通过原生 EntityCall 转发，不包含原生玩家登录及 Proxy 客户端协议。结果反映下述适配方案在给定配置下的表现。
