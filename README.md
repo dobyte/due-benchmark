@@ -1,5 +1,7 @@
 # due-benchmark
 
+![Due：性能，有多能打？——Skynet、Pitaya、KBEngine 分布式 TCP 性能实测](assets/due-benchmark-cover.png)
+
 面向 [Skynet](https://github.com/cloudwu/skynet)、[Pitaya](https://github.com/topfreegames/pitaya)、[KBEngine](https://github.com/kbengine/kbengine) 和 [Due](https://github.com/dobyte/due) 的分布式架构 TCP 性能测评，以及 Due 网络、集群和日志模块的测试示例。
 
 本文参考 [netpoll-benchmark](https://github.com/cloudwego/netpoll-benchmark) 的组织方式，提供测试场景、执行方法、环境配置与图表。本项目测量的是游戏服务器框架的跨进程调用链路，测试负载与 netpoll-benchmark 的 RPC 场景不同，两者数据不能直接比较。
